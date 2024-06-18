@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class TaskEntity extends Equatable {
   final int id;
   String description;
   int importance;
   bool isDone;
-  int? date;
+  DateTime? date;
 
   TaskEntity({
     required this.id,

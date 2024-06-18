@@ -75,7 +75,14 @@ class _TodoListState extends State<TodoList> {
                         },
                       ),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NewTask(),
+                            ),
+                          );
+                        },
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
