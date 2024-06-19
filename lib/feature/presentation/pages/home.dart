@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import '/feature/presentation/widgets/todo_list.dart';
 import '/constants/colors.dart';
+import '/feature/presentation/pages/newTask.dart';
+import '/feature/presentation/bloc/task_event.dart';
+import '/feature/presentation/bloc/task_provider.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final taskBloc = TaskProvider.of(context);
+    taskBloc.add(LoadTasks());
+
     return Scaffold(
       backgroundColor: backPrimary,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: создание новой задачи
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewTask(),
+            ),
+          );
         },
         shape: CircleBorder(),
         backgroundColor: tdBlue,
@@ -25,7 +31,7 @@ class _HomeState extends State<Home> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 60.0,
+            expandedHeight: 70.0,
             backgroundColor: backPrimary,
             flexibleSpace: const FlexibleSpaceBar(
                 titlePadding: EdgeInsets.only(top: 70, left: 50),
@@ -41,8 +47,18 @@ class _HomeState extends State<Home> {
                 )),
           ),
           SliverToBoxAdapter(
-            child: HomeBody(),
-          ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 50),
+                  child: Text(
+                    "Выполнено - ФФФФ",
+                    style: TextStyle(color: labTernitary, fontSize: 16),
+                  ),
+                ),
+                HomeBody(),
+              ])),
         ],
       ),
     );
@@ -55,13 +71,6 @@ class HomeBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-            padding: EdgeInsets.only(left: 50),
-            child: Text(
-              // TODO: счетчик сделанных дел
-              "Выполнено - ФФФФ",
-              style: TextStyle(color: labTernitary, fontSize: 15),
-            )),
         Container(height: 20),
         TodoList(),
         SizedBox(

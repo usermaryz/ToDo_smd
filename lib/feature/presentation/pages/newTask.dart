@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '/constants/colors.dart';
 import '/feature/domain/entities/task_entity.dart';
+import '/feature/presentation/bloc/task_event.dart';
+import '/feature/presentation/bloc/task_provider.dart';
+import '/feature/presentation/bloc/task_bloc.dart';
 
 class NewTask extends StatefulWidget {
   @override
@@ -26,6 +28,8 @@ class _NewTaskState extends State<NewTask> {
 
   @override
   Widget build(BuildContext context) {
+    final taskBloc = TaskProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Новая задача"),
@@ -39,7 +43,7 @@ class _NewTaskState extends State<NewTask> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              _saveTask();
+              _saveTask(taskBloc);
             },
           ),
         ],
@@ -86,14 +90,15 @@ class _NewTaskState extends State<NewTask> {
     );
   }
 
-  void _saveTask() {
+  void _saveTask(TaskBloc taskBloc) {
     final newTask = TaskEntity(
-      id: 0,
+      id: DateTime.now().millisecondsSinceEpoch,
       description: _taskController.text,
       importance: _importance,
       isDone: false,
     );
 
-    // Действие для сохранения задачи
+    taskBloc.add(AddTask(newTask));
+    Navigator.of(context).pop();
   }
 }

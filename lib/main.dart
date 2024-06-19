@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'feature/presentation/pages/home.dart';
 
+import 'package:flutter/material.dart';
+import '/feature/presentation/pages/home.dart';
+import '/feature/presentation/bloc/task_provider.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'To Do List',
-      theme: ThemeData(
-        useMaterial3: true,
+    return TaskProvider(
+      child: MaterialApp(
+        title: 'ToDo App',
+        home: Home(),
       ),
-      home: Home(),
     );
   }
 }
