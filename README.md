@@ -19,6 +19,7 @@ MyApp - это Flutter-приложение для управления зада
 Добавление новой задачи
 ![alt text](result_img/новое1.png)
 ![alt text](result_img/новое2.png)
+![alt text](result_img/новое3.png)
 
 
 ## Установка и запуск
