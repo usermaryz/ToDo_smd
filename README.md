@@ -1,16 +1,35 @@
-# todo_usermary
+# ToDo List
 
-Проект списка дела
+MyApp - это Flutter-приложение для управления задачами, которое позволяет создавать, просматривать и удалять задачи. Оно поддерживает несколько языков, включая русский, и включает в себя удобный календарь для выбора даты.
 
-## Getting Started
+## Основные функции
 
-This project is a starting point for a Flutter application.
+- Создание новых задач
+- Просмотр списка задач
+- Удаление задач
+- Переключение отображения выполненных задач
+- Выбор даты с помощью встроенного календаря
 
-A few resources to get you started if this is your first Flutter project:
+## Скриншоты работы
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![alt text](result_img/список2.png)
+![alt text](result_img/список3.png)
+![alt text](result_img/список1.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Добавление новой задачи
+![alt text](result_img/новое1.png)
+![alt text](result_img/новое2.png)
+
+
+## Установка и запуск
+
+Для установки и запуска проекта выполните следующие шаги:
+
+### Установка
+
+1. Убедитесь, что у вас установлены [Flutter](https://flutter.dev/docs/get-started/install) и [Dart](https://dart.dev/get-dart).
+
+2. Клонируйте репозиторий:
+
+   ```sh
+   git clone https://github.com/usermaryz/ToDo_smd.git
