@@ -5,6 +5,7 @@ import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
+import '/utils/logger.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({super.key});
@@ -23,11 +24,13 @@ class _NewTaskState extends State<NewTask> {
   void initState() {
     super.initState();
     _taskController = TextEditingController();
+    AppLogger.d('NewTask screen initialized');
   }
 
   @override
   void dispose() {
     _taskController.dispose();
+    AppLogger.d('NewTask screen disposed');
     super.dispose();
   }
 
@@ -98,6 +101,7 @@ class _NewTaskState extends State<NewTask> {
                 setState(() {
                   _importance = value!;
                 });
+                AppLogger.d('Importance set to $_importance');
               },
               items: const [
                 DropdownMenuItem<int>(
@@ -149,11 +153,11 @@ class _NewTaskState extends State<NewTask> {
                 Switch(
                   activeColor: tdBlue,
                   value: switchValue,
-                  inactiveTrackColor: tdWhite,
                   onChanged: (value) {
                     setState(() {
                       switchValue = value;
                     });
+                    AppLogger.d('Switch value changed to $switchValue');
                   },
                 ),
               ],
@@ -169,6 +173,7 @@ class _NewTaskState extends State<NewTask> {
                   setState(() {
                     selectedDate = date;
                   });
+                  AppLogger.d('Selected date set to $selectedDate');
                 },
               ),
             const SizedBox(height: 20),
@@ -199,6 +204,7 @@ class _NewTaskState extends State<NewTask> {
 
   void _saveTask(TaskBloc taskBloc) {
     if (_taskController.text.isEmpty) {
+      AppLogger.w('Task description is empty');
       return;
     }
 
@@ -211,6 +217,7 @@ class _NewTaskState extends State<NewTask> {
     );
 
     taskBloc.add(AddTask(newTask));
+    AppLogger.i('New task added: $newTask');
     Navigator.of(context).pop();
   }
 }
