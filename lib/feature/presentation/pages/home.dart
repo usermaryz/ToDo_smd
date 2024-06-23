@@ -1,11 +1,52 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '/feature/presentation/widgets/todo_list.dart';
 import '/constants/colors.dart';
-import '/feature/presentation/pages/newTask.dart';
+import '/feature/presentation/pages/new_task.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 
-class Home extends StatelessWidget {
+import '/feature/domain/entities/task_entity.dart';
+import '/feature/presentation/bloc/task_bloc.dart';
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final scrollController = ScrollController();
+  bool renderButtonHeader = false;
+  bool showCompletedTasks = false;
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      bool? newRenderButtonHeader;
+      if (scrollController.offset > 70) {
+        newRenderButtonHeader = true;
+      } else {
+        newRenderButtonHeader = false;
+      }
+      if (newRenderButtonHeader != renderButtonHeader) {
+        setState(() {
+          renderButtonHeader = newRenderButtonHeader!;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  void _toggleShowCompletedTasks() {
+    setState(() {
+      showCompletedTasks = !showCompletedTasks;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final taskBloc = TaskProvider.of(context);
@@ -18,47 +59,85 @@ class Home extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NewTask(),
+              builder: (context) => const NewTask(),
             ),
           );
         },
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         backgroundColor: tdBlue,
         child: const Icon(Icons.add, color: tdWhite),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: CustomScrollView(
+        controller: scrollController,
         slivers: [
           SliverAppBar(
             pinned: true,
             expandedHeight: 70.0,
             backgroundColor: backPrimary,
+            onStretchTrigger: () async {},
             flexibleSpace: const FlexibleSpaceBar(
-                titlePadding: EdgeInsets.only(top: 70, left: 50),
-                title: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Мои дела",
-                    style: TextStyle(
-                        color: labPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 25),
-                  ),
-                )),
-          ),
-          SliverToBoxAdapter(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 50),
-                  child: Text(
-                    "Выполнено - ФФФФ",
-                    style: TextStyle(color: labTernitary, fontSize: 16),
+              titlePadding: EdgeInsets.only(top: 70, left: 50),
+              title: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Мои дела',
+                  style: TextStyle(
+                    color: labPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
                   ),
                 ),
-                HomeBody(),
-              ])),
+              ),
+            ),
+            actions: [
+              if (renderButtonHeader)
+                IconButton(
+                  onPressed: _toggleShowCompletedTasks,
+                  icon: Icon(
+                    showCompletedTasks
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: BlocBuilder<TaskBloc, List<TaskEntity>>(
+              bloc: taskBloc,
+              builder: (context, tasks) {
+                final completedTasksCount =
+                    tasks.where((task) => task.isDone).length;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Text(
+                            'Выполнено - $completedTasksCount',
+                            style: const TextStyle(color: labTernitary, fontSize: 16),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: _toggleShowCompletedTasks,
+                          icon: Icon(
+                            showCompletedTasks
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ],
+                    ),
+                    HomeBody(showCompletedTasks: showCompletedTasks),
+                  ],
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -66,17 +145,51 @@ class Home extends StatelessWidget {
 }
 
 class HomeBody extends StatelessWidget {
+  final bool showCompletedTasks;
+
+  const HomeBody({super.key, required this.showCompletedTasks});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(height: 20),
-        TodoList(),
-        SizedBox(
+        TodoList(showCompletedTasks: showCompletedTasks),
+        const SizedBox(
           height: 40,
-        )
+        ),
       ],
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }

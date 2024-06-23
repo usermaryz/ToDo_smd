@@ -3,18 +3,33 @@ import '/feature/domain/entities/task_entity.dart';
 
 class MockTaskRepository implements TaskRepository {
   final List<TaskEntity> _tasks = [
-    TaskEntity(id: 0, description: 'Зарядка', importance: 1, isDone: true),
+    TaskEntity(
+        id: 0,
+        description: 'Зарядка',
+        importance: 1,
+        isDone: true,
+        date: DateTime(2023, 2, 3)),
     TaskEntity(id: 1, description: 'Зарядка', importance: 2, isDone: true),
     TaskEntity(
         id: 2, description: 'Поход в магазин', importance: 2, isDone: true),
     TaskEntity(id: 3, description: 'Почта', importance: 3, isDone: false),
     TaskEntity(id: 4, description: 'Созвон', importance: 1, isDone: false),
-    TaskEntity(id: 5, description: 'Пары', importance: 2, isDone: false),
+    TaskEntity(
+        id: 5,
+        description: 'Пары',
+        importance: 2,
+        isDone: false,
+        date: DateTime(2023, 2, 3)),
     TaskEntity(id: 6, description: 'Спортзал', importance: 1, isDone: false),
     TaskEntity(id: 7, description: 'Почта', importance: 1, isDone: false),
-    TaskEntity(id: 8, description: 'Созвон', importance: 1, isDone: false),
+    TaskEntity(
+        id: 8,
+        description: 'Созвон',
+        importance: 1,
+        isDone: false,
+        date: DateTime(2023, 6, 13)),
     TaskEntity(id: 9, description: 'Пары', importance: 2, isDone: false),
-    TaskEntity(id: 10, description: 'Спортзал', importance: 2, isDone: false),
+    TaskEntity(id: 10, description: 'Спортзал', importance: 2, isDone: true),
     TaskEntity(id: 11, description: 'Почта', importance: 2, isDone: false),
     TaskEntity(id: 12, description: 'Созвон', importance: 1, isDone: false),
     TaskEntity(id: 13, description: 'Пары', importance: 1, isDone: false),
@@ -38,7 +53,20 @@ class MockTaskRepository implements TaskRepository {
   }
 
   @override
+  void doneTask(TaskEntity task) {
+    task.isDone = !task.isDone;
+  }
+
+  @override
   void deleteTask(int id) {
     _tasks.removeWhere((task) => task.id == id);
+  }
+
+  @override
+  void doneList(TaskEntity doneTask) {
+    final index = _tasks.indexWhere((task) => task.id != doneTask.id);
+    if (index != -1) {
+      _tasks[index] = _tasks[index].copyWith(isDone: true);
+    }
   }
 }

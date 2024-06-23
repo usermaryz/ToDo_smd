@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'task.dart';
-import '/feature/presentation/pages/newTask.dart';
+import '/feature/presentation/pages/new_task.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/colors.dart';
 
-class TodoList extends StatelessWidget {
+class TodoList extends StatefulWidget {
+  final bool showCompletedTasks;
+
+  const TodoList({super.key, required this.showCompletedTasks});
+
+  @override
+  State<TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     final taskBloc = TaskProvider.of(context);
@@ -16,13 +25,17 @@ class TodoList extends StatelessWidget {
     return BlocBuilder<TaskBloc, List<TaskEntity>>(
       bloc: taskBloc,
       builder: (context, tasks) {
+        final filteredTasks = widget.showCompletedTasks
+            ? tasks
+            : tasks.where((task) => !task.isDone).toList();
+
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Container(
             decoration: BoxDecoration(
               color: tdWhite,
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(const Radius.circular(8.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
@@ -41,16 +54,16 @@ class TodoList extends StatelessWidget {
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: tasks.length,
+                    itemCount: filteredTasks.length,
                     itemBuilder: (context, index) {
                       return TaskItem(
-                        task: tasks[index],
+                        task: filteredTasks[index],
                         onToggleCompleted: (bool isCompleted) {
-                          taskBloc.add(
-                              UpdateTask(tasks[index]..isDone = isCompleted));
+                          taskBloc.add(DoneTask(filteredTasks[index]));
+                          setState(() {});
                         },
                         onDelete: () {
-                          taskBloc.add(DeleteTask(tasks[index].id));
+                          taskBloc.add(DeleteTask(filteredTasks[index].id));
                         },
                       );
                     },
@@ -60,21 +73,21 @@ class TodoList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NewTask(),
+                          builder: (context) => const NewTask(),
                         ),
                       );
                     },
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Новое",
-                        style: TextStyle(color: labTernitary, fontSize: 16),
-                      ),
-                    ),
                     color: Colors.transparent,
                     elevation: 0,
                     minWidth: double.infinity,
                     height: 40,
+                    child: const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Новое',
+                        style: TextStyle(color: labTernitary, fontSize: 16),
+                      ),
+                    ),
                   ),
                 ],
               ),

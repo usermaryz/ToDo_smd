@@ -34,3 +34,21 @@ class DeleteTask extends TaskEvent {
   @override
   List<Object> get props => [taskId];
 }
+
+class DoneTask extends TaskEvent {
+  final TaskEntity task;
+
+  DoneTask(this.task);
+
+  @override
+  List<Object> get props => [task];
+}
+
+class DoneList extends TaskEvent {
+  final TaskEntity task;
+
+  DoneList(this.task);
+
+  @override
+  List<Object> get props => [task];
+}

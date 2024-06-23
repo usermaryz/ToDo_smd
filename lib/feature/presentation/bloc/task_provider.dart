@@ -5,9 +5,8 @@ import '/feature/domain/repositories/mock_task_repository.dart';
 class TaskProvider extends InheritedWidget {
   final TaskBloc bloc;
 
-  TaskProvider({Key? key, required Widget child})
-      : bloc = TaskBloc(MockTaskRepository()),
-        super(key: key, child: child);
+  TaskProvider({super.key, required super.child})
+      : bloc = TaskBloc(MockTaskRepository());
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;

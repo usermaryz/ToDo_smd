@@ -25,5 +25,15 @@ class TaskBloc extends Bloc<TaskEvent, List<TaskEntity>> {
       repository.deleteTask(event.taskId);
       emit(repository.getTasks());
     });
+
+    on<DoneTask>((event, emit) {
+      repository.doneTask(event.task);
+      emit(repository.getTasks());
+    });
+
+    on<DoneList>((event, emit) {
+      repository.doneList(event.task);
+      emit(repository.getTasks());
+    });
   }
 }

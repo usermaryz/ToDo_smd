@@ -15,6 +15,17 @@ class TaskEntity extends Equatable {
     this.date,
   });
 
+  TaskEntity copyWith(
+      {int? id, String? description, bool? isDone, DateTime? date}) {
+    return TaskEntity(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      importance: importance,
+      isDone: isDone ?? this.isDone,
+      date: date,
+    );
+  }
+
   @override
   List<Object?> get props => [id, description, importance, isDone, date];
 }
