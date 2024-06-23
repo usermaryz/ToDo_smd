@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
-          const Locale('en', 'EN'),
-          const Locale('ru', 'RU'),
+          Locale('en', 'EN'),
+          Locale('ru', 'RU'),
         ],
-        locale: const Locale('ru'),
+        locale: Locale('ru'),
         title: 'ToDo App',
         home: Home(),
       ),

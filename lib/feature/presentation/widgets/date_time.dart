@@ -65,8 +65,8 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
         return Theme(
           data: ThemeData.light().copyWith(
             primaryColor: Colors.blue,
-            colorScheme: ColorScheme.light(primary: Colors.blue),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: const ColorScheme.light(primary: Colors.blue),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
