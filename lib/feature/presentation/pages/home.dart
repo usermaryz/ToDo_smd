@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
   void initState() {
     scrollController.addListener(() {
       bool? newRenderButtonHeader;
-      if (scrollController.offset > 70) {
+      if (scrollController.offset > 120) {
         newRenderButtonHeader = true;
       } else {
         newRenderButtonHeader = false;
@@ -73,11 +73,11 @@ class _HomeState extends State<Home> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 70.0,
+            expandedHeight: 80,
             backgroundColor: backPrimary,
             onStretchTrigger: () async {},
             flexibleSpace: const FlexibleSpaceBar(
-              titlePadding: EdgeInsets.only(top: 70, left: 50),
+              titlePadding: EdgeInsets.only(top: 50, left: 50),
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -119,7 +119,8 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(left: 50),
                           child: Text(
                             'Выполнено - $completedTasksCount',
-                            style: const TextStyle(color: labTernitary, fontSize: 16),
+                            style: const TextStyle(
+                                color: labTernitary, fontSize: 16),
                           ),
                         ),
                         IconButton(
