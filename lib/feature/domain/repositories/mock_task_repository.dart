@@ -20,7 +20,7 @@ class MockTaskRepository implements TaskRepository {
         importance: 2,
         isDone: false,
         date: DateTime(2023, 2, 3)),
-    TaskEntity(id: 6, description: 'Спортзал', importance: 1, isDone: false),
+    TaskEntity(id: 6, description: 'Спортзал', importance: 2, isDone: false),
     TaskEntity(id: 7, description: 'Почта', importance: 1, isDone: false),
     TaskEntity(
         id: 8,
@@ -31,8 +31,8 @@ class MockTaskRepository implements TaskRepository {
     TaskEntity(id: 9, description: 'Пары', importance: 2, isDone: false),
     TaskEntity(id: 10, description: 'Спортзал', importance: 2, isDone: true),
     TaskEntity(id: 11, description: 'Почта', importance: 2, isDone: false),
-    TaskEntity(id: 12, description: 'Созвон', importance: 1, isDone: false),
-    TaskEntity(id: 13, description: 'Пары', importance: 1, isDone: false),
+    TaskEntity(id: 12, description: 'Созвон', importance: 2, isDone: false),
+    TaskEntity(id: 13, description: 'Пары', importance: 2, isDone: false),
     TaskEntity(id: 14, description: 'Спортзал', importance: 1, isDone: false),
   ];
 

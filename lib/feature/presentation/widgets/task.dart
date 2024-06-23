@@ -92,15 +92,20 @@ class TaskItem extends StatelessWidget {
             else if (task.importance == 3)
               const Icon(Icons.arrow_downward, color: tdGrey, size: 16),
             const SizedBox(width: 2),
-            Text(
-              task.description,
-              style: TextStyle(
-                fontSize: 16,
-                decoration: task.isDone
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-                decorationColor: labTernitary,
-                color: task.isDone ? labTernitary : labPrimary,
+            Expanded(
+              child: Text(
+                task.description,
+                maxLines: 1, // Ограничение количества строк до одной
+                overflow: TextOverflow
+                    .ellipsis, // Добавление многоточия при переполнении
+                style: TextStyle(
+                  fontSize: 16,
+                  decoration: task.isDone
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                  decorationColor: labTernitary,
+                  color: task.isDone ? labTernitary : labPrimary,
+                ),
               ),
             ),
           ],

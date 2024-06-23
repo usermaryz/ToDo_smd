@@ -8,7 +8,7 @@ import '/constants/colors.dart';
 import '/utils/logger.dart';
 
 class NewTask extends StatefulWidget {
-  const NewTask({super.key});
+  const NewTask({Key? key}) : super(key: key);
 
   @override
   _NewTaskState createState() => _NewTaskState();
@@ -51,152 +51,154 @@ class _NewTaskState extends State<NewTask> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Material(
-              elevation: 2.0,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              shadowColor: Colors.grey.withOpacity(0.2),
-              child: TextField(
-                controller: _taskController,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                  fillColor: tdWhite,
-                  filled: true,
-                  hintStyle: TextStyle(color: labTernitary),
-                  hintText: 'Что надо сделать...',
-                  border: InputBorder.none, // Remove the border
-                ),
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Divider(
-              color: labTernitary,
-              height: 1,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Приоритет',
-              style: TextStyle(
-                fontSize: 16,
-                decorationColor: labTernitary,
-                color: labPrimary,
-              ),
-            ),
-            DropdownButton<int>(
-              value: _importance,
-              onChanged: (int? value) {
-                setState(() {
-                  _importance = value!;
-                });
-                AppLogger.d('Importance set to $_importance');
-              },
-              items: const [
-                DropdownMenuItem<int>(
-                  value: 1,
-                  child: Text('Высокий',
-                      style: TextStyle(
-                        color: labPrimary,
-                        fontSize: 14,
-                      )),
-                ),
-                DropdownMenuItem<int>(
-                  value: 2,
-                  child: Text('Средний',
-                      style: TextStyle(
-                        color: labPrimary,
-                        fontSize: 14,
-                      )),
-                ),
-                DropdownMenuItem<int>(
-                  value: 3,
-                  child: Text('Низкий',
-                      style: TextStyle(
-                        color: labPrimary,
-                        fontSize: 14,
-                      )),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Divider(
-              color: labTernitary,
-              height: 1,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Выбрать дату',
-                  style: TextStyle(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Material(
+                elevation: 2.0,
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                shadowColor: Colors.grey.withOpacity(0.2),
+                child: TextField(
+                  controller: _taskController,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(16),
+                    fillColor: tdWhite,
+                    filled: true,
+                    hintStyle: TextStyle(color: labTernitary),
+                    hintText: 'Что надо сделать...',
+                    border: InputBorder.none, // Remove the border
+                  ),
+                  style: const TextStyle(
                     fontSize: 16,
-                    color: labPrimary,
+                    color: Colors.black87,
                   ),
                 ),
-                const SizedBox(width: 10),
-                Switch(
-                  activeColor: tdBlue,
-                  value: switchValue,
-                  onChanged: (value) {
+              ),
+              const SizedBox(height: 20),
+              const Divider(
+                color: labTernitary,
+                height: 1,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Приоритет',
+                style: TextStyle(
+                  fontSize: 16,
+                  decorationColor: labTernitary,
+                  color: labPrimary,
+                ),
+              ),
+              DropdownButton<int>(
+                value: _importance,
+                onChanged: (int? value) {
+                  setState(() {
+                    _importance = value!;
+                  });
+                  AppLogger.d('Importance set to $_importance');
+                },
+                items: const [
+                  DropdownMenuItem<int>(
+                    value: 1,
+                    child: Text('Высокий',
+                        style: TextStyle(
+                          color: labPrimary,
+                          fontSize: 14,
+                        )),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 2,
+                    child: Text('Средний',
+                        style: TextStyle(
+                          color: labPrimary,
+                          fontSize: 14,
+                        )),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 3,
+                    child: Text('Низкий',
+                        style: TextStyle(
+                          color: labPrimary,
+                          fontSize: 14,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Divider(
+                color: labTernitary,
+                height: 1,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Выбрать дату',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: labPrimary,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Switch(
+                    activeColor: tdBlue,
+                    value: switchValue,
+                    onChanged: (value) {
+                      setState(() {
+                        switchValue = value;
+                      });
+                      AppLogger.d('Switch value changed to $switchValue');
+                    },
+                  ),
+                ],
+              ),
+              if (switchValue)
+                DateTimeWidget(
+                  titleText: 'Сделать до',
+                  valueText: selectedDate != null
+                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                      : 'дд/мм/гг',
+                  iconSection: Icons.calendar_today,
+                  onTap: (DateTime date) {
                     setState(() {
-                      switchValue = value;
+                      selectedDate = date;
                     });
-                    AppLogger.d('Switch value changed to $switchValue');
+                    AppLogger.d('Selected date set to $selectedDate');
                   },
                 ),
-              ],
-            ),
-            if (switchValue)
-              DateTimeWidget(
-                titleText: 'Сделать до',
-                valueText: selectedDate != null
-                    ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                    : 'дд/мм/гг',
-                iconSection: Icons.calendar_today,
-                onTap: (DateTime date) {
-                  setState(() {
-                    selectedDate = date;
-                  });
-                  AppLogger.d('Selected date set to $selectedDate');
-                },
+              const SizedBox(height: 20),
+              const Divider(
+                color: labTernitary,
+                height: 1,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
               ),
-            const SizedBox(height: 20),
-            const Divider(
-              color: labTernitary,
-              height: 1,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
-            const SizedBox(height: 20),
-            const Row(children: [
-              Icon(Icons.delete, color: labTernitary),
-              SizedBox(
-                width: 10,
-              ),
-              Text('Удалить',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: labTernitary,
-                  ))
-            ])
-          ],
+              const SizedBox(height: 20),
+              const Row(children: [
+                Icon(Icons.delete, color: labTernitary),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Удалить',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: labTernitary,
+                    ))
+              ])
+            ],
+          ),
         ),
       ),
     );
