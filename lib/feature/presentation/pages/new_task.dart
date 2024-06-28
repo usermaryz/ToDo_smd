@@ -8,7 +8,7 @@ import '/constants/colors.dart';
 import '/utils/logger.dart';
 
 class NewTask extends StatefulWidget {
-  const NewTask({Key? key}) : super(key: key);
+  const NewTask({super.key});
 
   @override
   _NewTaskState createState() => _NewTaskState();
