@@ -10,6 +10,7 @@ import '/feature/presentation/bloc/task_provider.dart';
 
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
+import '/constants/strings.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -76,12 +77,12 @@ class _HomeState extends State<Home> {
             expandedHeight: 80,
             backgroundColor: backPrimary,
             onStretchTrigger: () async {},
-            flexibleSpace: const FlexibleSpaceBar(
+            flexibleSpace: FlexibleSpaceBar(
               titlePadding: EdgeInsets.only(top: 50, left: 50),
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Мои дела',
+                  Messages.appTitle,
                   style: TextStyle(
                     color: labPrimary,
                     fontWeight: FontWeight.w600,
@@ -118,7 +119,7 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding: const EdgeInsets.only(left: 50),
                           child: Text(
-                            'Выполнено - $completedTasksCount',
+                            '${Messages.completed} - $completedTasksCount',
                             style: const TextStyle(
                                 color: labTernitary, fontSize: 16),
                           ),

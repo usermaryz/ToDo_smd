@@ -6,6 +6,7 @@ import '/feature/presentation/bloc/task_bloc.dart';
 import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
+import '/constants/strings.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({super.key});
@@ -65,12 +66,12 @@ class _NewTaskState extends State<NewTask> {
                   controller: _taskController,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(16),
                     fillColor: tdWhite,
                     filled: true,
                     hintStyle: TextStyle(color: labTernitary),
-                    hintText: 'Что надо сделать...',
+                    hintText: Messages.newTaskHint,
                     border: InputBorder.none, // Remove the border
                   ),
                   style: const TextStyle(
@@ -88,8 +89,8 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Приоритет',
+              Text(
+                Messages.priority,
                 style: TextStyle(
                   fontSize: 16,
                   decorationColor: labTernitary,
@@ -104,10 +105,10 @@ class _NewTaskState extends State<NewTask> {
                   });
                   AppLogger.d('Importance set to $_importance');
                 },
-                items: const [
+                items: [
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('Высокий',
+                    child: Text(Messages.high,
                         style: TextStyle(
                           color: labPrimary,
                           fontSize: 14,
@@ -115,7 +116,7 @@ class _NewTaskState extends State<NewTask> {
                   ),
                   DropdownMenuItem<int>(
                     value: 2,
-                    child: Text('Средний',
+                    child: Text(Messages.medium,
                         style: TextStyle(
                           color: labPrimary,
                           fontSize: 14,
@@ -123,7 +124,7 @@ class _NewTaskState extends State<NewTask> {
                   ),
                   DropdownMenuItem<int>(
                     value: 3,
-                    child: Text('Низкий',
+                    child: Text(Messages.low,
                         style: TextStyle(
                           color: labPrimary,
                           fontSize: 14,
@@ -143,8 +144,8 @@ class _NewTaskState extends State<NewTask> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Выбрать дату',
+                  Text(
+                    Messages.selectDate,
                     style: TextStyle(
                       fontSize: 16,
                       color: labPrimary,
@@ -165,10 +166,10 @@ class _NewTaskState extends State<NewTask> {
               ),
               if (switchValue)
                 DateTimeWidget(
-                  titleText: 'Сделать до',
+                  titleText: Messages.selectDate,
                   valueText: selectedDate != null
                       ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                      : 'дд/мм/гг',
+                      : Messages.ddmmyy,
                   iconSection: Icons.calendar_today,
                   onTap: (DateTime date) {
                     setState(() {
@@ -186,12 +187,12 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              const Row(children: [
+              Row(children: [
                 Icon(Icons.delete, color: labTernitary),
                 SizedBox(
                   width: 10,
                 ),
-                Text('Удалить',
+                Text(Messages.delete,
                     style: TextStyle(
                       fontSize: 16,
                       color: labTernitary,

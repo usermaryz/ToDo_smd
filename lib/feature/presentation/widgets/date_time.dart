@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/constants/colors.dart';
+import '/constants/strings.dart';
 
 class DateTimeWidget extends StatefulWidget {
   final String titleText;
@@ -66,7 +67,8 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
           data: ThemeData.light().copyWith(
             primaryColor: Colors.blue,
             colorScheme: const ColorScheme.light(primary: Colors.blue),
-            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            buttonTheme:
+                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
