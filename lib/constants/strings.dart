@@ -21,6 +21,7 @@ class Messages {
       Intl.message('Скрыть завершённые', name: 'visibilityOff');
   static String get newTask => Intl.message('Новое', name: 'New');
   static String get ddmmyy => Intl.message('дд/мм/гг', name: 'dd/mm/yy');
+  static String get doBefore => Intl.message('До', name: 'do before');
 }
 
 Future<void> initializeMessages() async {
