@@ -78,12 +78,12 @@ class _HomeState extends State<Home> {
             backgroundColor: backPrimary,
             onStretchTrigger: () async {},
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.only(top: 50, left: 50),
+              titlePadding: const EdgeInsets.only(top: 50, left: 50),
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   Messages.appTitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: labPrimary,
                     fontWeight: FontWeight.w600,
                     fontSize: 25,

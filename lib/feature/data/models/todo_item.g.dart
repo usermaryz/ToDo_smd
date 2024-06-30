@@ -11,9 +11,9 @@ TodoItem _$TodoItemFromJson(Map<String, dynamic> json) => TodoItem(
       text: json['text'] as String,
       importance: json['importance'] as String,
       done: json['done'] as bool,
-      created_at: (json['created_at'] as num).toInt(),
-      changed_at: (json['changed_at'] as num).toInt(),
-      last_updated_by: json['last_updated_by'] as String,
+      createdAt: (json['created_at'] as num).toInt(),
+      changedAt: (json['changed_at'] as num).toInt(),
+      lastUpdatedBy: json['last_updated_by'] as String,
       deadline: (json['deadline'] as num?)?.toInt(),
       color: json['color'] as String?,
     );
@@ -25,7 +25,7 @@ Map<String, dynamic> _$TodoItemToJson(TodoItem instance) => <String, dynamic>{
       'deadline': instance.deadline,
       'done': instance.done,
       'color': instance.color,
-      'created_at': instance.created_at,
-      'changed_at': instance.changed_at,
-      'last_updated_by': instance.last_updated_by,
+      'created_at': instance.createdAt,
+      'changed_at': instance.changedAt,
+      'last_updated_by': instance.lastUpdatedBy,
     };

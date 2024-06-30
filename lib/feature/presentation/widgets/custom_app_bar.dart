@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
-import '/constants/strings.dart';
 
 class CustomAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -37,7 +36,7 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
                 children: [
                   Text(
                     Messages.appTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: 25,

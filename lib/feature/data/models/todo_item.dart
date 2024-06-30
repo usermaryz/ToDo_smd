@@ -10,18 +10,18 @@ class TodoItem {
   int? deadline;
   bool done;
   String? color;
-  int created_at;
-  int changed_at;
-  String last_updated_by;
+  int createdAt;
+  int changedAt;
+  String lastUpdatedBy;
 
   TodoItem({
     required this.id,
     required this.text,
     required this.importance,
     required this.done,
-    required this.created_at,
-    required this.changed_at,
-    required this.last_updated_by,
+    required this.createdAt,
+    required this.changedAt,
+    required this.lastUpdatedBy,
     this.deadline,
     this.color,
   });

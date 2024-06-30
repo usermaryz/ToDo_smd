@@ -67,10 +67,10 @@ class _NewTaskState extends State<NewTask> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(16),
+                    contentPadding: const EdgeInsets.all(16),
                     fillColor: tdWhite,
                     filled: true,
-                    hintStyle: TextStyle(color: labTernitary),
+                    hintStyle: const TextStyle(color: labTernitary),
                     hintText: Messages.newTaskHint,
                     border: InputBorder.none, // Remove the border
                   ),
@@ -91,7 +91,7 @@ class _NewTaskState extends State<NewTask> {
               const SizedBox(height: 20),
               Text(
                 Messages.priority,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   decorationColor: labTernitary,
                   color: labPrimary,
@@ -109,7 +109,7 @@ class _NewTaskState extends State<NewTask> {
                   DropdownMenuItem<int>(
                     value: 1,
                     child: Text(Messages.high,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
@@ -117,7 +117,7 @@ class _NewTaskState extends State<NewTask> {
                   DropdownMenuItem<int>(
                     value: 2,
                     child: Text(Messages.medium,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
@@ -125,7 +125,7 @@ class _NewTaskState extends State<NewTask> {
                   DropdownMenuItem<int>(
                     value: 3,
                     child: Text(Messages.low,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
@@ -146,7 +146,7 @@ class _NewTaskState extends State<NewTask> {
                 children: [
                   Text(
                     Messages.selectDate,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: labPrimary,
                     ),
@@ -188,12 +188,12 @@ class _NewTaskState extends State<NewTask> {
               ),
               const SizedBox(height: 20),
               Row(children: [
-                Icon(Icons.delete, color: labTernitary),
-                SizedBox(
+                const Icon(Icons.delete, color: labTernitary),
+                const SizedBox(
                   width: 10,
                 ),
                 Text(Messages.delete,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: labTernitary,
                     ))

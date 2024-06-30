@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '/feature/data/models/todo_item.dart';
 
-const String BASE_URL = "https://beta.mrdekk.ru/todo";
-const String TOKEN = "YOUR_AUTH_TOKEN";
+const String BASE_URL = 'https://beta.mrdekk.ru/todo';
+const String TOKEN = 'YOUR_AUTH_TOKEN';
 
 Future<List<TodoItem>> fetchTodoList() async {
   final response = await http.get(

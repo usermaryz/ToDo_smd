@@ -4,18 +4,23 @@ part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
 class TaskModel extends TaskEntity {
+  @override
   @HiveField(0)
   final int id;
 
+  @override
   @HiveField(1)
   final String description;
 
+  @override
   @HiveField(2)
   final int importance;
 
+  @override
   @HiveField(3)
   final bool isDone;
 
+  @override
   @HiveField(4)
   final DateTime? date;
 
