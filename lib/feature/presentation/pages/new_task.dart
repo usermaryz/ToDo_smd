@@ -45,7 +45,7 @@ class _NewTaskState extends State<NewTask> {
         backgroundColor: backPrimary,
         actions: [
           TextButton(
-            child: const Text('СОХРАНИТЬ', style: TextStyle(color: tdBlue)),
+            child: Text(Messages.saveButton, style: TextStyle(color: tdBlue)),
             onPressed: () {
               _saveTask(taskBloc);
             },
@@ -72,7 +72,7 @@ class _NewTaskState extends State<NewTask> {
                     filled: true,
                     hintStyle: const TextStyle(color: labTernitary),
                     hintText: Messages.newTaskHint,
-                    border: InputBorder.none, // Remove the border
+                    border: InputBorder.none,
                   ),
                   style: const TextStyle(
                     fontSize: 16,

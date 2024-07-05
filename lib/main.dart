@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           Locale('en', 'EN'),
           Locale('ru', 'RU'),
         ],
-        locale: Locale('ru'),
+        locale: Locale('en'),
         title: 'ToDo App',
         home: Home(),
       ),

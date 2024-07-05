@@ -22,6 +22,7 @@ class Messages {
   static String get newTask => Intl.message('Новое', name: 'New');
   static String get ddmmyy => Intl.message('дд/мм/гг', name: 'dd/mm/yy');
   static String get doBefore => Intl.message('До', name: 'do before');
+  static String get saveButton => Intl.message('СОХРАНИТЬ', name: 'SAVE');
 }
 
 Future<void> initializeMessages() async {
