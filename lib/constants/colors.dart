@@ -51,3 +51,73 @@ const Color backIosPrimaryDark = Color.fromRGBO(0, 0, 0, 1.0);
 const Color backPrimaryDark = Color.fromRGBO(60, 60, 63, 1.0);
 const Color backSecondaryDark = Color.fromRGBO(37, 37, 40, 1.0);
 const Color backElevatedDark = Color.fromRGBO(22, 22, 24, 1.0);
+
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primaryColor: tdBlue,
+  backgroundColor: backPrimary,
+  scaffoldBackgroundColor: backPrimary,
+  appBarTheme: const AppBarTheme(
+    color: backPrimary,
+    iconTheme: IconThemeData(color: labPrimary),
+    titleTextStyle: TextStyle(
+      color: labPrimary,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  textTheme: const TextTheme(
+    bodyText1: TextStyle(color: labPrimary),
+    bodyText2: TextStyle(color: labSecondary),
+    caption: TextStyle(color: labTernitary),
+    button: TextStyle(color: tdBlue),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: tdWhite,
+    hintStyle: const TextStyle(color: labTernitary),
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+  ),
+  buttonTheme: const ButtonThemeData(
+    buttonColor: tdBlue,
+    textTheme: ButtonTextTheme.primary,
+  ),
+);
+
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: tdBlueDark,
+  backgroundColor: backPrimaryDark,
+  scaffoldBackgroundColor: backPrimaryDark,
+  appBarTheme: AppBarTheme(
+    color: backPrimaryDark,
+    iconTheme: IconThemeData(color: labPrimaryDark),
+    titleTextStyle: TextStyle(
+      color: labPrimaryDark,
+      fontSize: 25,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  textTheme: TextTheme(
+    bodyText1: TextStyle(color: labPrimaryDark),
+    bodyText2: TextStyle(color: labSecondaryDark),
+    caption: TextStyle(color: labTernitaryDark),
+    button: TextStyle(color: tdBlueDark),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: backSecondaryDark,
+    hintStyle: TextStyle(color: labTernitaryDark),
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: tdBlueDark,
+    textTheme: ButtonTextTheme.primary,
+  ),
+);

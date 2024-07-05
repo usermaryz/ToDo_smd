@@ -9,7 +9,9 @@ import '/utils/logger.dart';
 import '/constants/strings.dart';
 
 class NewTask extends StatefulWidget {
-  const NewTask({super.key});
+  final TaskEntity? task;
+
+  const NewTask({super.key, this.task});
 
   @override
   _NewTaskState createState() => _NewTaskState();
@@ -18,13 +20,26 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   late TextEditingController _taskController;
   int _importance = 2;
+  int? id;
   DateTime? selectedDate;
   bool switchValue = false;
+  bool deleteButton = false;
 
   @override
   void initState() {
     super.initState();
-    _taskController = TextEditingController();
+
+    if (widget.task != null) {
+      _taskController = TextEditingController(text: widget.task!.description);
+      id = widget.task!.id;
+      _importance = widget.task!.importance;
+      selectedDate = widget.task!.date;
+      switchValue = widget.task!.date != null;
+      deleteButton = true;
+    } else {
+      _taskController = TextEditingController();
+    }
+
     AppLogger.d('NewTask screen initialized');
   }
 
@@ -45,7 +60,8 @@ class _NewTaskState extends State<NewTask> {
         backgroundColor: backPrimary,
         actions: [
           TextButton(
-            child: Text(Messages.saveButton, style: TextStyle(color: tdBlue)),
+            child: Text(Messages.saveButton,
+                style: const TextStyle(color: tdBlue)),
             onPressed: () {
               _saveTask(taskBloc);
             },
@@ -187,17 +203,22 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              Row(children: [
-                const Icon(Icons.delete, color: labTernitary),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(Messages.delete,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: labTernitary,
-                    ))
-              ])
+              InkWell(
+                  onTap: () {
+                    _deleteTask(taskBloc);
+                  },
+                  child: Row(children: [
+                    Icon(Icons.delete,
+                        color: deleteButton ? tdRed : labTernitary),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(Messages.delete,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: deleteButton ? tdRed : labTernitary,
+                        ))
+                  ]))
             ],
           ),
         ),
@@ -212,15 +233,26 @@ class _NewTaskState extends State<NewTask> {
     }
 
     final newTask = TaskEntity(
-      id: DateTime.now().millisecondsSinceEpoch,
+      id: widget.task?.id ?? DateTime.now().millisecondsSinceEpoch,
       description: _taskController.text,
       importance: _importance,
-      isDone: false,
+      isDone: widget.task?.isDone ?? false,
       date: selectedDate,
     );
 
-    taskBloc.add(AddTask(newTask));
-    AppLogger.i('New task added: $newTask');
+    if (widget.task != null) {
+      taskBloc.add(UpdateTask(newTask));
+      AppLogger.i('Task updated: $newTask');
+    } else {
+      taskBloc.add(AddTask(newTask));
+      AppLogger.i('New task added: $newTask');
+    }
+
+    Navigator.of(context).pop();
+  }
+
+  void _deleteTask(TaskBloc taskBloc) {
+    taskBloc.add(DeleteTask(id!));
     Navigator.of(context).pop();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
+import '/feature/presentation/pages/new_task.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskEntity task;
@@ -18,7 +19,7 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(),
+      key: ValueKey(task.id),
       background: Container(
         color: tdGreen,
         child: const Align(
@@ -119,10 +120,18 @@ class TaskItem extends StatelessWidget {
                 ),
               )
             : null,
-        trailing: const Icon(
-          Icons.info,
+        trailing: IconButton(
+          icon: const Icon(Icons.info),
           color: supSeparetor,
-          size: 25.0,
+          iconSize: 25.0,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewTask(task: task),
+              ),
+            );
+          },
         ),
       ),
     );

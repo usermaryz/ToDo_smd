@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import '/feature/domain/entities/task_entity.dart';
+import '/constants/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,12 +23,11 @@ class MyApp extends StatelessWidget {
   final Box<TaskEntity> taskBox;
 
   const MyApp({super.key, required this.taskBox});
-
   @override
   Widget build(BuildContext context) {
     return TaskProvider(
       taskBox: taskBox,
-      child: const MaterialApp(
+      child: MaterialApp(
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
         ],
         locale: Locale('en'),
         title: 'ToDo App',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         home: Home(),
       ),
     );

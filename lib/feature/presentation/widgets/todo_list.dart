@@ -86,7 +86,8 @@ class _TodoListState extends State<TodoList> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         Messages.newTask,
-                        style: const TextStyle(color: labTernitary, fontSize: 16),
+                        style:
+                            const TextStyle(color: labTernitary, fontSize: 16),
                       ),
                     ),
                   ),
