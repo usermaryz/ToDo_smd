@@ -1,89 +1,196 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import '/feature/presentation/widgets/todo_list.dart';
+import '/constants/colors.dart';
+import '/feature/presentation/pages/new_task.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '/feature/presentation/bloc/task_event.dart';
+import '/feature/presentation/bloc/task_provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+import '/feature/domain/entities/task_entity.dart';
+import '/feature/presentation/bloc/task_bloc.dart';
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomeState extends State<Home> {
+  final scrollController = ScrollController();
+  bool renderButtonHeader = false;
+  bool showCompletedTasks = false;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      bool? newRenderButtonHeader;
+      if (scrollController.offset > 120) {
+        newRenderButtonHeader = true;
+      } else {
+        newRenderButtonHeader = false;
+      }
+      if (newRenderButtonHeader != renderButtonHeader) {
+        setState(() {
+          renderButtonHeader = newRenderButtonHeader!;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  void _toggleShowCompletedTasks() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      showCompletedTasks = !showCompletedTasks;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final taskBloc = TaskProvider.of(context);
+    taskBloc.add(LoadTasks());
+
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: backPrimary,
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NewTask(),
+            ),
+          );
+        },
+        shape: const CircleBorder(),
+        backgroundColor: tdBlue,
+        child: const Icon(Icons.add, color: tdWhite),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      body: CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 80,
+            backgroundColor: backPrimary,
+            onStretchTrigger: () async {},
+            flexibleSpace: const FlexibleSpaceBar(
+              titlePadding: EdgeInsets.only(top: 50, left: 50),
+              title: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Мои дела',
+                  style: TextStyle(
+                    color: labPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              if (renderButtonHeader)
+                IconButton(
+                  onPressed: _toggleShowCompletedTasks,
+                  icon: Icon(
+                    showCompletedTasks
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: BlocBuilder<TaskBloc, List<TaskEntity>>(
+              bloc: taskBloc,
+              builder: (context, tasks) {
+                final completedTasksCount =
+                    tasks.where((task) => task.isDone).length;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Text(
+                            'Выполнено - $completedTasksCount',
+                            style: const TextStyle(
+                                color: labTernitary, fontSize: 16),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: _toggleShowCompletedTasks,
+                          icon: Icon(
+                            showCompletedTasks
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ],
+                    ),
+                    HomeBody(showCompletedTasks: showCompletedTasks),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
+  }
+}
+
+class HomeBody extends StatelessWidget {
+  final bool showCompletedTasks;
+
+  const HomeBody({super.key, required this.showCompletedTasks});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(height: 20),
+        TodoList(showCompletedTasks: showCompletedTasks),
+        const SizedBox(
+          height: 40,
+        ),
+      ],
+    );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }

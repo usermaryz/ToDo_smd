@@ -26,29 +26,28 @@ const Color backPrimary = Color.fromRGBO(247, 246, 242, 1.0);
 const Color backSecondary = Color.fromRGBO(255, 255, 255, 1.0);
 const Color backElevated = Color.fromRGBO(255, 255, 255, 1.0);
 
-// TODO: обновить цвета для темной темы
 // ТЕМНАЯ ТЕМА
 // Support Colors
-const Color supSeparetorDark = Color.fromRGBO(255, 0, 0, 0.5);
-const Color supOverlayDark = Color.fromRGBO(255, 0, 0, 0.5);
-const Color supNavBarBlurDark = Color.fromRGBO(255, 0, 0, 0.5);
+const Color supSeparetorDark = Color.fromRGBO(0, 0, 0, 0.2);
+const Color supOverlayDark = Color.fromRGBO(0, 0, 0, 0.32);
+const Color supNavBarBlurDark = Color.fromRGBO(26, 26, 26, 0.9);
 
 // Label Colors
-const Color labPrimaryDark = Color.fromRGBO(255, 0, 0, 0.5);
-const Color labSecondaryDark = Color.fromRGBO(255, 0, 0, 0.5);
-const Color labTernitaryDark = Color.fromRGBO(255, 0, 0, 0.5);
-const Color labDisableDark = Color.fromRGBO(255, 0, 0, 0.5);
+const Color labPrimaryDark = Color.fromRGBO(255, 255, 255, 1.0);
+const Color labSecondaryDark = Color.fromRGBO(255, 255, 255, 0.6);
+const Color labTernitaryDark = Color.fromRGBO(255, 255, 255, 0.4);
+const Color labDisableDark = Color.fromRGBO(255, 255, 255, 0.15);
 
 // Task Colors
-const Color tdRedDark = Color(0xFF3B30);
-const Color tdGreenDark = Color(0x34C759);
-const Color tdBlueDark = Color(0x007AFF);
-const Color tdGreyDark = Color(0x8E8E93);
-const Color tdGreyLightDark = Color(0xD1D1D6);
-const Color tdWhiteDark = Color(0xD1D1D6);
+const Color tdRedDark = Color.fromRGBO(255, 69, 58, 1.0);
+const Color tdGreenDark = Color.fromRGBO(50, 215, 75, 1.0);
+const Color tdBlueDark = Color.fromRGBO(10, 132, 255, 1.0);
+const Color tdGreyDark = Color.fromRGBO(142, 142, 147, 1.0);
+const Color tdGreyLightDark = Color.fromRGBO(72, 72, 74, 1.0);
+const Color tdWhiteDark = Color.fromRGBO(255, 255, 255, 1.0);
 
 // Back Colors
-const Color backIosPrimaryDark = Color(0xF7F6F2);
-const Color backPrimaryDark = Color(0xF7F6F2);
-const Color backSecondaryDark = Color(0xF7F6F2);
-const Color backElevatedDark = Color(0xF7F6F2);
+const Color backIosPrimaryDark = Color.fromRGBO(0, 0, 0, 1.0);
+const Color backPrimaryDark = Color.fromRGBO(60, 60, 63, 1.0);
+const Color backSecondaryDark = Color.fromRGBO(37, 37, 40, 1.0);
+const Color backElevatedDark = Color.fromRGBO(22, 22, 24, 1.0);
