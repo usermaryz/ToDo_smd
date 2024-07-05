@@ -11,6 +11,9 @@ import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/strings.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
+import '/router/app_route_inf_parser.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -57,12 +60,9 @@ class _HomeState extends State<Home> {
       backgroundColor: backPrimary,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NewTask(),
-            ),
-          );
+          final routerDelegate =
+              Router.of(context).routerDelegate as AppRouterDelegate;
+          routerDelegate.handleNavigation(AppRoutes.newTask);
         },
         shape: const CircleBorder(),
         backgroundColor: tdBlue,

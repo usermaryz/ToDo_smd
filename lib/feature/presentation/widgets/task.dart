@@ -3,6 +3,9 @@ import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
 import '/feature/presentation/pages/new_task.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
+import '/router/app_route_inf_parser.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskEntity task;
@@ -46,11 +49,13 @@ class TaskItem extends StatelessWidget {
           ),
         ),
       ),
-      onDismissed: (direction) {
+      confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
           onToggleCompleted(!task.isDone);
+          return false;
         } else {
           onDelete();
+          return true;
         }
       },
       child: ListTile(
@@ -125,12 +130,9 @@ class TaskItem extends StatelessWidget {
           color: supSeparetor,
           iconSize: 25.0,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewTask(task: task),
-              ),
-            );
+            final routerDelegate =
+                Router.of(context).routerDelegate as AppRouterDelegate;
+            routerDelegate.handleNavigation(AppRoutes.newTask, task: task);
           },
         ),
       ),

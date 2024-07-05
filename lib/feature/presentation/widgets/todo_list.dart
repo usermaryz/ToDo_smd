@@ -8,6 +8,9 @@ import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
+import '/router/app_route_inf_parser.dart';
 
 class TodoList extends StatefulWidget {
   final bool showCompletedTasks;
@@ -71,12 +74,9 @@ class _TodoListState extends State<TodoList> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NewTask(),
-                        ),
-                      );
+                      final routerDelegate = Router.of(context).routerDelegate
+                          as AppRouterDelegate;
+                      routerDelegate.handleNavigation(AppRoutes.newTask);
                     },
                     color: Colors.transparent,
                     elevation: 0,

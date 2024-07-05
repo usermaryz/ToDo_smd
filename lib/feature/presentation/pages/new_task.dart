@@ -8,6 +8,10 @@ import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
 
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
+import '/router/app_route_inf_parser.dart';
+
 class NewTask extends StatefulWidget {
   final TaskEntity? task;
 
@@ -58,6 +62,14 @@ class _NewTaskState extends State<NewTask> {
       backgroundColor: backPrimary,
       appBar: AppBar(
         backgroundColor: backPrimary,
+        leading: IconButton(
+          onPressed: () {
+            final routerDelegate =
+                Router.of(context).routerDelegate as AppRouterDelegate;
+            routerDelegate.handleNavigation(AppRoutes.home);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         actions: [
           TextButton(
             child: Text(Messages.saveButton,

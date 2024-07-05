@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'feature/presentation/pages/home.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -7,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
+import 'router/app_router.dart';
+import '/router/app_route_inf_parser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,28 +22,32 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final Box<TaskEntity> taskBox;
+  final AppRouterDelegate _appRouterDelegate = AppRouterDelegate();
+  final AppRouteInformationParser _appRouteInformationParser =
+      AppRouteInformationParser();
 
-  const MyApp({super.key, required this.taskBox});
+  MyApp({super.key, required this.taskBox});
   @override
   Widget build(BuildContext context) {
     return TaskProvider(
       taskBox: taskBox,
-      child: MaterialApp(
-        localizationsDelegates: [
+      child: MaterialApp.router(
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en', 'EN'),
           Locale('ru', 'RU'),
         ],
-        locale: Locale('en'),
+        locale: const Locale('en'),
         title: 'ToDo App',
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.system,
-        home: Home(),
+        routerDelegate: _appRouterDelegate,
+        routeInformationParser: _appRouteInformationParser,
       ),
     );
   }
