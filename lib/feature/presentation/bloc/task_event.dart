@@ -10,7 +10,6 @@ class LoadTasks extends TaskEvent {}
 
 class AddTask extends TaskEvent {
   final TaskEntity task;
-
   AddTask(this.task);
 
   @override

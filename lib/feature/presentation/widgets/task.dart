@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
-import '/feature/presentation/pages/new_task.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
-import '/router/app_route_inf_parser.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskEntity task;
@@ -51,7 +49,7 @@ class TaskItem extends StatelessWidget {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          onToggleCompleted(!task.isDone);
+          onToggleCompleted(!task.done);
           return false;
         } else {
           onDelete();
@@ -61,7 +59,7 @@ class TaskItem extends StatelessWidget {
       child: ListTile(
         leading: InkWell(
           onTap: () {
-            onToggleCompleted(!task.isDone);
+            onToggleCompleted(!task.done);
           },
           child: Container(
             width: 20.0,
@@ -71,19 +69,19 @@ class TaskItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               border: Border.all(
                 width: 2,
-                color: task.isDone
+                color: task.done
                     ? tdGreen
                     : task.importance == 1
                         ? tdRed
                         : tdGrey,
               ),
-              color: task.isDone
+              color: task.done
                   ? tdGreen
                   : task.importance == 1
                       ? tdRed.withOpacity(0.5)
                       : tdWhite,
             ),
-            child: task.isDone
+            child: task.done
                 ? const Icon(
                     Icons.check,
                     color: tdWhite,
@@ -101,24 +99,24 @@ class TaskItem extends StatelessWidget {
             const SizedBox(width: 2),
             Expanded(
               child: Text(
-                task.description,
+                task.text,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 16,
-                  decoration: task.isDone
+                  decoration: task.done
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
                   decorationColor: labTernitary,
-                  color: task.isDone ? labTernitary : labPrimary,
+                  color: task.done ? labTernitary : labPrimary,
                 ),
               ),
             ),
           ],
         ),
-        subtitle: task.date != null
+        subtitle: task.deadline != null
             ? Text(
-                '${Messages.doBefore}: ${task.date!.day}/${task.date!.month}/${task.date!.year}',
+                '${Messages.doBefore}: ${task.deadline!.day}/${task.deadline!.month}/${task.deadline!.year}',
                 style: const TextStyle(
                   color: labTernitary,
                   fontSize: 14,

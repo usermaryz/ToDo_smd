@@ -5,6 +5,8 @@ abstract class TaskRepository {
   void addTask(TaskEntity task);
   void updateTask(TaskEntity task);
   void deleteTask(int id);
-  void doneTask(TaskEntity task);
+  void doneTask(
+    TaskEntity task,
+  );
   void doneList(TaskEntity doneTask);
 }

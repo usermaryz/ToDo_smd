@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'task.dart';
-import '/feature/presentation/pages/new_task.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
@@ -10,7 +9,6 @@ import '/constants/colors.dart';
 import '/constants/strings.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
-import '/router/app_route_inf_parser.dart';
 
 class TodoList extends StatefulWidget {
   final bool showCompletedTasks;
@@ -31,7 +29,7 @@ class _TodoListState extends State<TodoList> {
       builder: (context, tasks) {
         final filteredTasks = widget.showCompletedTasks
             ? tasks
-            : tasks.where((task) => !task.isDone).toList();
+            : tasks.where((task) => !task.done).toList();
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),

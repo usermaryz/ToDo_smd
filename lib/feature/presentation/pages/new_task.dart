@@ -10,7 +10,6 @@ import '/constants/strings.dart';
 
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
-import '/router/app_route_inf_parser.dart';
 
 class NewTask extends StatefulWidget {
   final TaskEntity? task;
@@ -26,19 +25,22 @@ class _NewTaskState extends State<NewTask> {
   int _importance = 2;
   int? id;
   DateTime? selectedDate;
+  DateTime? createdAt;
+  DateTime? changedat;
   bool switchValue = false;
   bool deleteButton = false;
+  int? revision;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.task != null) {
-      _taskController = TextEditingController(text: widget.task!.description);
+      _taskController = TextEditingController(text: widget.task!.text);
       id = widget.task!.id;
       _importance = widget.task!.importance;
-      selectedDate = widget.task!.date;
-      switchValue = widget.task!.date != null;
+      selectedDate = widget.task!.deadline;
+      switchValue = widget.task!.deadline != null;
       deleteButton = true;
     } else {
       _taskController = TextEditingController();
@@ -246,10 +248,13 @@ class _NewTaskState extends State<NewTask> {
 
     final newTask = TaskEntity(
       id: widget.task?.id ?? DateTime.now().millisecondsSinceEpoch,
-      description: _taskController.text,
+      text: _taskController.text,
       importance: _importance,
-      isDone: widget.task?.isDone ?? false,
-      date: selectedDate,
+      done: widget.task?.done ?? false,
+      deadline: selectedDate,
+      createdAt: widget.task?.createdAt ?? DateTime.now(),
+      changedAt: DateTime.now(),
+      lastUpdatedBy: 'userId',
     );
 
     if (widget.task != null) {

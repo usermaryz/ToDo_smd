@@ -10,7 +10,7 @@ class TaskModel extends TaskEntity {
 
   @override
   @HiveField(1)
-  final String description;
+  final String text;
 
   @override
   @HiveField(2)
@@ -18,43 +18,75 @@ class TaskModel extends TaskEntity {
 
   @override
   @HiveField(3)
-  final bool isDone;
+  final bool done;
 
   @override
   @HiveField(4)
-  final DateTime? date;
+  final DateTime? deadline;
 
-  TaskModel({
-    required this.id,
-    required this.description,
-    required this.importance,
-    required this.isDone,
-    this.date,
-  }) : super(
+  @override
+  @HiveField(5)
+  final String? color;
+
+  @override
+  @HiveField(6)
+  final DateTime createdAt;
+
+  @override
+  @HiveField(7)
+  final DateTime changedAt;
+
+  @override
+  @HiveField(8)
+  final String lastUpdatedBy;
+
+  TaskModel(
+      {required this.id,
+      required this.text,
+      required this.importance,
+      this.deadline,
+      required this.done,
+      this.color,
+      required this.createdAt,
+      required this.changedAt,
+      required this.lastUpdatedBy})
+      : super(
           id: id,
-          description: description,
+          text: text,
           importance: importance,
-          isDone: isDone,
-          date: date,
+          deadline: deadline,
+          done: done,
+          color: color,
+          createdAt: createdAt,
+          changedAt: changedAt,
+          lastUpdatedBy: lastUpdatedBy,
         );
 
   factory TaskModel.fromEntity(TaskEntity entity) {
     return TaskModel(
       id: entity.id,
-      description: entity.description,
+      text: entity.text,
       importance: entity.importance,
-      isDone: entity.isDone,
-      date: entity.date,
+      deadline: entity.deadline,
+      done: entity.done,
+      color: entity.color,
+      createdAt: entity.createdAt,
+      changedAt: entity.changedAt,
+      lastUpdatedBy: entity.lastUpdatedBy,
     );
   }
 
   TaskEntity toEntity() {
     return TaskEntity(
       id: id,
-      description: description,
+      text: text,
       importance: importance,
-      isDone: isDone,
-      date: date,
+      deadline: deadline,
+      done: done,
+      color: color,
+      createdAt: createdAt,
+      changedAt: changedAt,
+      lastUpdatedBy: lastUpdatedBy,
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:hive/hive.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/domain/repositories/task_repository.dart';
+import '/feature/data/services/rest_client.dart';
 
 class HiveTaskRepository implements TaskRepository {
   final Box<TaskEntity> taskBox;
+  final RestClient client;
 
-  HiveTaskRepository(this.taskBox);
+  HiveTaskRepository(this.taskBox, this.client);
 
   @override
   List<TaskEntity> getTasks() {
@@ -15,6 +17,7 @@ class HiveTaskRepository implements TaskRepository {
   @override
   void addTask(TaskEntity task) {
     taskBox.add(task);
+    client.addTask(task);
   }
 
   @override
@@ -24,6 +27,7 @@ class HiveTaskRepository implements TaskRepository {
         orElse: () => null);
     if (taskKey != null) {
       taskBox.put(taskKey, task);
+      client.updateTask(task);
     }
   }
 
@@ -33,6 +37,7 @@ class HiveTaskRepository implements TaskRepository {
         .firstWhere((key) => taskBox.get(key)?.id == id, orElse: () => null);
     if (taskKey != null) {
       taskBox.delete(taskKey);
+      client.deleteTask(id.toString());
     }
   }
 
@@ -42,8 +47,9 @@ class HiveTaskRepository implements TaskRepository {
         (key) => taskBox.get(key)?.id == task.id,
         orElse: () => null);
     if (taskKey != null) {
-      final updatedTask = task.copyWith(isDone: !task.isDone);
+      final updatedTask = task.copyWith(done: !task.done);
       taskBox.put(taskKey, updatedTask);
+      client.updateTask(updatedTask);
     }
   }
 
@@ -52,8 +58,9 @@ class HiveTaskRepository implements TaskRepository {
     for (var key in taskBox.keys) {
       final task = taskBox.get(key);
       if (task != null && task.id != doneTask.id) {
-        final updatedTask = task.copyWith(isDone: true);
+        final updatedTask = task.copyWith(done: true);
         taskBox.put(key, updatedTask);
+        client.updateTask(updatedTask);
       }
     }
   }

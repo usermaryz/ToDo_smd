@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '/feature/presentation/pages/home.dart';
 import '/feature/presentation/pages/new_task.dart';
 import '/feature/domain/entities/task_entity.dart';
@@ -7,12 +6,14 @@ import 'app_routes.dart';
 
 class AppRouterDelegate extends RouterDelegate<AppRoutes>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutes> {
+  @override
   final GlobalKey<NavigatorState> navigatorKey;
 
   AppRoutes? _currentRoute;
   TaskEntity? selectedTask;
   AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
 
+  @override
   AppRoutes? get currentConfiguration => _currentRoute;
 
   void handleNavigation(AppRoutes route, {TaskEntity? task}) {

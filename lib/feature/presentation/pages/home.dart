@@ -1,19 +1,15 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '/feature/presentation/widgets/todo_list.dart';
 import '/constants/colors.dart';
-import '/feature/presentation/pages/new_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
-
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/strings.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
-import '/router/app_route_inf_parser.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -108,7 +104,7 @@ class _HomeState extends State<Home> {
               bloc: taskBloc,
               builder: (context, tasks) {
                 final completedTasksCount =
-                    tasks.where((task) => task.isDone).length;
+                    tasks.where((task) => task.done).length;
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

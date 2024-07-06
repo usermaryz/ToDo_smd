@@ -18,27 +18,39 @@ class TaskEntityAdapter extends TypeAdapter<TaskEntity> {
     };
     return TaskEntity(
       id: fields[0] as int,
-      description: fields[1] as String,
-      isDone: fields[2] as bool,
-      importance: fields[3] as int,
-      date: fields[4] as DateTime?,
+      text: fields[1] as String,
+      importance: fields[2] as int,
+      deadline: fields[3] as DateTime?,
+      done: fields[4] as bool,
+      color: fields[5] as String?,
+      createdAt: fields[6] as DateTime,
+      changedAt: fields[7] as DateTime,
+      lastUpdatedBy: fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, TaskEntity obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.description)
+      ..write(obj.text)
       ..writeByte(2)
-      ..write(obj.isDone)
-      ..writeByte(3)
       ..write(obj.importance)
+      ..writeByte(3)
+      ..write(obj.deadline)
       ..writeByte(4)
-      ..write(obj.date);
+      ..write(obj.done)
+      ..writeByte(5)
+      ..write(obj.color)
+      ..writeByte(6)
+      ..write(obj.createdAt)
+      ..writeByte(7)
+      ..write(obj.changedAt)
+      ..writeByte(8)
+      ..write(obj.lastUpdatedBy);
   }
 
   @override
