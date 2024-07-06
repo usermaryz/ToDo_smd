@@ -22,11 +22,11 @@ class NewTask extends StatefulWidget {
 
 class _NewTaskState extends State<NewTask> {
   late TextEditingController _taskController;
-  int _importance = 2;
-  int? id;
+  String _importance = 'basic';
+  String? id;
   DateTime? selectedDate;
   DateTime? createdAt;
-  DateTime? changedat;
+  DateTime? changedAt;
   bool switchValue = false;
   bool deleteButton = false;
   int? revision;
@@ -127,33 +127,33 @@ class _NewTaskState extends State<NewTask> {
                   color: labPrimary,
                 ),
               ),
-              DropdownButton<int>(
+              DropdownButton<String>(
                 value: _importance,
-                onChanged: (int? value) {
+                onChanged: (String? value) {
                   setState(() {
                     _importance = value!;
                   });
                   AppLogger.d('Importance set to $_importance');
                 },
                 items: [
-                  DropdownMenuItem<int>(
-                    value: 1,
+                  DropdownMenuItem<String>(
+                    value: 'important',
                     child: Text(Messages.high,
                         style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
-                  DropdownMenuItem<int>(
-                    value: 2,
+                  DropdownMenuItem<String>(
+                    value: 'basic',
                     child: Text(Messages.medium,
                         style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
-                  DropdownMenuItem<int>(
-                    value: 3,
+                  DropdownMenuItem<String>(
+                    value: 'low',
                     child: Text(Messages.low,
                         style: const TextStyle(
                           color: labPrimary,
@@ -247,7 +247,7 @@ class _NewTaskState extends State<NewTask> {
     }
 
     final newTask = TaskEntity(
-      id: widget.task?.id ?? DateTime.now().millisecondsSinceEpoch,
+      id: widget.task?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
       text: _taskController.text,
       importance: _importance,
       done: widget.task?.done ?? false,

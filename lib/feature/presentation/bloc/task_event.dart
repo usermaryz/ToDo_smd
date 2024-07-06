@@ -26,7 +26,7 @@ class UpdateTask extends TaskEvent {
 }
 
 class DeleteTask extends TaskEvent {
-  final int taskId;
+  final String taskId;
 
   DeleteTask(this.taskId);
 

@@ -6,7 +6,7 @@ part 'task_model.g.dart';
 class TaskModel extends TaskEntity {
   @override
   @HiveField(0)
-  final int id;
+  final String id;
 
   @override
   @HiveField(1)
@@ -14,7 +14,7 @@ class TaskModel extends TaskEntity {
 
   @override
   @HiveField(2)
-  final int importance;
+  final String importance;
 
   @override
   @HiveField(3)

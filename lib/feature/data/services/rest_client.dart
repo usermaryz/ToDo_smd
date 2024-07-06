@@ -1,12 +1,12 @@
 import 'api_service.dart';
-import 'dio_client.dart';
+import 'http_client.dart';
 import '/feature/domain/entities/task_entity.dart';
 
 class RestClient {
   final ApiService apiService;
 
   RestClient(String baseUrl, String token)
-      : apiService = ApiService(DioClient(baseUrl, token));
+      : apiService = ApiService(HttpClient(baseUrl, token));
 
   Future<List<TaskEntity>> getTasks() => apiService.getList();
 

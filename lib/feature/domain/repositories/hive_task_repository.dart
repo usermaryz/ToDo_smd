@@ -32,7 +32,7 @@ class HiveTaskRepository implements TaskRepository {
   }
 
   @override
-  void deleteTask(int id) {
+  void deleteTask(String id) {
     final taskKey = taskBox.keys
         .firstWhere((key) => taskBox.get(key)?.id == id, orElse: () => null);
     if (taskKey != null) {

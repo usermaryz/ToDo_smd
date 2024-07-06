@@ -1,16 +1,18 @@
 import '/feature/domain/entities/task_entity.dart';
-import 'dio_client.dart';
+import 'http_client.dart';
+import 'dart:convert';
 
 class ApiService {
-  final DioClient _dioClient;
+  final HttpClient _httpClient;
 
-  ApiService(this._dioClient);
+  ApiService(this._httpClient);
 
   Future<List<TaskEntity>> getList() async {
     try {
-      final response = await _dioClient.dio.get('/list');
-      if (response.data['status'] == 'ok') {
-        List<TaskEntity> tasks = (response.data['list'] as List)
+      final response = await _httpClient.get('/list');
+      final data = json.decode(response.body);
+      if (data['status'] == 'ok') {
+        List<TaskEntity> tasks = (data['list'] as List)
             .map((task) => TaskEntity.fromJson(task))
             .toList();
         return tasks;
@@ -24,12 +26,13 @@ class ApiService {
 
   Future<void> updateList(List<TaskEntity> tasks) async {
     try {
-      final response = await _dioClient.dio.patch(
+      final response = await _httpClient.patch(
         '/list',
-        data: {'list': tasks.map((task) => task.toJson()).toList()},
-        //options: Options(headers: {'X-Last-Known-Revision': revision}),
+        body:
+            json.encode({'list': tasks.map((task) => task.toJson()).toList()}),
       );
-      if (response.data['status'] != 'ok') {
+      final data = json.decode(response.body);
+      if (data['status'] != 'ok') {
         throw Exception('Failed to update tasks');
       }
     } catch (e) {
@@ -39,9 +42,10 @@ class ApiService {
 
   Future<TaskEntity> getTaskById(String id) async {
     try {
-      final response = await _dioClient.dio.get('/list/$id');
-      if (response.data['status'] == 'ok') {
-        return TaskEntity.fromJson(response.data['element']);
+      final response = await _httpClient.get('/list/$id');
+      final data = json.decode(response.body);
+      if (data['status'] == 'ok') {
+        return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to load task');
       }
@@ -52,13 +56,13 @@ class ApiService {
 
   Future<TaskEntity> addTask(TaskEntity task) async {
     try {
-      final response = await _dioClient.dio.post(
+      final response = await _httpClient.post(
         '/list',
-        data: task.toJson(),
-        //options: Options(headers: {'X-Last-Known-Revision': revision}),
+        body: json.encode(task.toJson()),
       );
-      if (response.data['status'] == 'ok') {
-        return TaskEntity.fromJson(response.data['element']);
+      final data = json.decode(response.body);
+      if (data['status'] == 'ok') {
+        return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to add task');
       }
@@ -69,13 +73,13 @@ class ApiService {
 
   Future<TaskEntity> updateTask(TaskEntity task) async {
     try {
-      final response = await _dioClient.dio.put(
+      final response = await _httpClient.put(
         '/list/${task.id}',
-        data: task.toJson(),
-        //options: Options(headers: {'X-Last-Known-Revision': revision}),
+        body: json.encode(task.toJson()),
       );
-      if (response.data['status'] == 'ok') {
-        return TaskEntity.fromJson(response.data['element']);
+      final data = json.decode(response.body);
+      if (data['status'] == 'ok') {
+        return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to update task');
       }
@@ -86,12 +90,10 @@ class ApiService {
 
   Future<TaskEntity> deleteTask(String id) async {
     try {
-      final response = await _dioClient.dio.delete(
-        '/list/$id',
-        //options: Options(headers: {'X-Last-Known-Revision': revision}),
-      );
-      if (response.data['status'] == 'ok') {
-        return TaskEntity.fromJson(response.data['element']);
+      final response = await _httpClient.delete('/list/$id');
+      final data = json.decode(response.body);
+      if (data['status'] == 'ok') {
+        return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to delete task');
       }

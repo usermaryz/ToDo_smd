@@ -17,9 +17,9 @@ class TaskEntityAdapter extends TypeAdapter<TaskEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TaskEntity(
-      id: fields[0] as int,
+      id: fields[0] as String,
       text: fields[1] as String,
-      importance: fields[2] as int,
+      importance: fields[2] as String,
       deadline: fields[3] as DateTime?,
       done: fields[4] as bool,
       color: fields[5] as String?,
