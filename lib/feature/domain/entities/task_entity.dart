@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
+import 'package:uuid/uuid.dart';
 
 part 'task_entity.g.dart';
 
@@ -70,8 +69,8 @@ class TaskEntity extends HiveObject {
       'done': done,
       'color': color,
       'created_at': createdAt.millisecondsSinceEpoch,
-      'changed_at': changedAt,
-      'last_updated_by': changedAt.millisecondsSinceEpoch,
+      'changed_at': changedAt.millisecondsSinceEpoch,
+      'last_updated_by': changedAt,
     };
   }
 
@@ -98,41 +97,7 @@ class TaskEntity extends HiveObject {
       lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
     );
   }
-
-  static int _importanceFromString(String importance) {
-    switch (importance) {
-      case 'low':
-        return 1;
-      case 'basic':
-        return 2;
-      case 'important':
-        return 3;
-      default:
-        return 2; // default to 'basic'
-    }
-  }
-
-  static String _importanceToString(int importance) {
-    switch (importance) {
-      case 1:
-        return 'low';
-      case 2:
-        return 'basic';
-      case 3:
-        return 'important';
-      default:
-        return 'basic'; // default to 'basic'
-    }
-  }
-
-  static int _uuidToInt(String uuid) {
-    var bytes = utf8.encode(uuid); // Encode UUID string to bytes
-    var digest = sha256.convert(bytes); // Generate SHA-256 hash of the bytes
-    // Parse the first 8 characters of the hexadecimal representation of the hash
-    return int.parse(digest.toString().substring(0, 8), radix: 16);
-  }
 }
-
 
 class TaskListResponse {
   final String status;

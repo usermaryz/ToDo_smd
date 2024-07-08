@@ -1,16 +1,22 @@
-import '/feature/domain/entities/task_entity.dart';
-import 'http_client.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '/feature/domain/entities/task_entity.dart';
 
 class ApiService {
-  final HttpClient _httpClient;
+  final http.Client client;
+  final String baseUrl;
+  final String token;
 
-  ApiService(this._httpClient);
+  ApiService(this.client, this.baseUrl, this.token);
 
   Future<List<TaskEntity>> getList() async {
-    try {
-      final response = await _httpClient.get('/list');
-      final data = json.decode(response.body);
+    final response = await client.get(
+      Uri.parse('$baseUrl/list'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['status'] == 'ok') {
         List<TaskEntity> tasks = (data['list'] as List)
             .map((task) => TaskEntity.fromJson(task))
@@ -19,86 +25,94 @@ class ApiService {
       } else {
         throw Exception('Failed to load tasks');
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      throw Exception('Failed to load tasks: ${response.statusCode}');
     }
   }
 
   Future<void> updateList(List<TaskEntity> tasks) async {
-    try {
-      final response = await _httpClient.patch(
-        '/list',
-        body:
-            json.encode({'list': tasks.map((task) => task.toJson()).toList()}),
-      );
-      final data = json.decode(response.body);
-      if (data['status'] != 'ok') {
-        throw Exception('Failed to update tasks');
-      }
-    } catch (e) {
-      rethrow;
+    final response = await client.patch(
+      Uri.parse('$baseUrl/list'),
+      headers: {'Authorization': 'Bearer $token'},
+      body: jsonEncode({'list': tasks.map((task) => task.toJson()).toList()}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update tasks: ${response.statusCode}');
     }
   }
 
   Future<TaskEntity> getTaskById(String id) async {
-    try {
-      final response = await _httpClient.get('/list/$id');
-      final data = json.decode(response.body);
+    final response = await client.get(
+      Uri.parse('$baseUrl/list/$id'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['status'] == 'ok') {
         return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to load task');
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      throw Exception('Failed to load task: ${response.statusCode}');
     }
   }
 
   Future<TaskEntity> addTask(TaskEntity task) async {
-    try {
-      final response = await _httpClient.post(
-        '/list',
-        body: json.encode(task.toJson()),
-      );
-      final data = json.decode(response.body);
+    final response = await client.post(
+      Uri.parse('$baseUrl/list'),
+      headers: {'Authorization': 'Bearer $token'},
+      body: jsonEncode(task.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['status'] == 'ok') {
         return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to add task');
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      throw Exception('Failed to add task: ${response.statusCode}');
     }
   }
 
   Future<TaskEntity> updateTask(TaskEntity task) async {
-    try {
-      final response = await _httpClient.put(
-        '/list/${task.id}',
-        body: json.encode(task.toJson()),
-      );
-      final data = json.decode(response.body);
+    final response = await client.put(
+      Uri.parse('$baseUrl/list/${task.id}'),
+      headers: {'Authorization': 'Bearer $token'},
+      body: jsonEncode(task.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['status'] == 'ok') {
         return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to update task');
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      throw Exception('Failed to update task: ${response.statusCode}');
     }
   }
 
   Future<TaskEntity> deleteTask(String id) async {
-    try {
-      final response = await _httpClient.delete('/list/$id');
-      final data = json.decode(response.body);
+    final response = await client.delete(
+      Uri.parse('$baseUrl/list/$id'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['status'] == 'ok') {
         return TaskEntity.fromJson(data['element']);
       } else {
         throw Exception('Failed to delete task');
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      throw Exception('Failed to delete task: ${response.statusCode}');
     }
   }
 }

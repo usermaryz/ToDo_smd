@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.18.1
   retrofit: ^4.1.0
   uuid: ^3.0.0
+  connectivity_plus: ^2.3.0
 
 
   # The following adds the Cupertino Icons font to your application.

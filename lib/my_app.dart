@@ -10,7 +10,7 @@ import '/constants/colors.dart';
 
 class MyApp extends StatelessWidget {
   final Box<TaskEntity> taskBox;
-  final RestClient client; 
+  final RestClient client;
   final AppRouterDelegate _appRouterDelegate = AppRouterDelegate();
   final AppRouteInformationParser _appRouteInformationParser =
       AppRouteInformationParser();

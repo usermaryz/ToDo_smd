@@ -7,33 +7,43 @@ class TaskBloc extends Bloc<TaskEvent, List<TaskEntity>> {
   final TaskRepository repository;
 
   TaskBloc(this.repository) : super([]) {
-    on<LoadTasks>((event, emit) {
-      emit(repository.getTasks());
-    });
+    on<LoadTasks>(_onLoadTasks);
+    on<AddTask>(_onAddTask);
+    on<UpdateTask>(_onUpdateTask);
+    on<DeleteTask>(_onDeleteTask);
+    on<DoneTask>(_onDoneTask);
+    on<DoneList>(_onDoneList);
 
-    on<AddTask>((event, emit) {
-      repository.addTask(event.task);
-      emit(repository.getTasks());
-    });
+    // Задачи при инициализации
+    add(LoadTasks());
+  }
 
-    on<UpdateTask>((event, emit) {
-      repository.updateTask(event.task);
-      emit(repository.getTasks());
-    });
+  void _onLoadTasks(LoadTasks event, Emitter<List<TaskEntity>> emit) {
+    emit(repository.getTasks());
+  }
 
-    on<DeleteTask>((event, emit) {
-      repository.deleteTask(event.taskId);
-      emit(repository.getTasks());
-    });
+  void _onAddTask(AddTask event, Emitter<List<TaskEntity>> emit) {
+    repository.addTask(event.task);
+    emit(repository.getTasks());
+  }
 
-    on<DoneTask>((event, emit) {
-      repository.doneTask(event.task);
-      emit(repository.getTasks());
-    });
+  void _onUpdateTask(UpdateTask event, Emitter<List<TaskEntity>> emit) {
+    repository.updateTask(event.task);
+    emit(repository.getTasks());
+  }
 
-    on<DoneList>((event, emit) {
-      repository.doneList(event.task);
-      emit(repository.getTasks());
-    });
+  void _onDeleteTask(DeleteTask event, Emitter<List<TaskEntity>> emit) {
+    repository.deleteTask(event.taskId);
+    emit(repository.getTasks());
+  }
+
+  void _onDoneTask(DoneTask event, Emitter<List<TaskEntity>> emit) {
+    repository.doneTask(event.task);
+    emit(repository.getTasks());
+  }
+
+  void _onDoneList(DoneList event, Emitter<List<TaskEntity>> emit) {
+    repository.doneList(event.task);
+    emit(repository.getTasks());
   }
 }
