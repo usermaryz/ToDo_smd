@@ -21,8 +21,8 @@ void main() async {
   final taskBox = await Hive.openBox<TaskEntity>('tasks');
   final RestClient client = RestClient(baseUrl, token);
 
-  final syncManager = SyncManager(taskBox: taskBox, restClient: client);
-  await syncManager.syncTasks();
+  //final syncManager = SyncManager(taskBox: taskBox, restClient: client);
+  //await syncManager.syncTasks();
 
   final connectivityResult = await (Connectivity().checkConnectivity());
 

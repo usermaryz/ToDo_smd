@@ -1,4 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+/*import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hive/hive.dart';
 import 'api_service.dart';
 import '/feature/domain/entities/task_entity.dart';
@@ -23,4 +23,4 @@ class SyncManager {
       }
     }
   }
-}
+}*/

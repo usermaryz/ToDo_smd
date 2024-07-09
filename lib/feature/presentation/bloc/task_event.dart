@@ -1,61 +1,59 @@
 import 'package:equatable/equatable.dart';
 import '/feature/domain/entities/task_entity.dart';
 
-// Базовый класс для всех событий, который использует Equatable для сравнения объектов
 abstract class TaskEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-// Событие для загрузки задач
 class LoadTasks extends TaskEvent {}
 
-// Событие для добавления задачи
 class AddTask extends TaskEvent {
   final TaskEntity task;
+  final int revision;
 
-  AddTask(this.task);
+  AddTask(this.task, this.revision);
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, revision];
 }
 
-// Событие для обновления задачи
 class UpdateTask extends TaskEvent {
   final TaskEntity task;
+  final int revision;
 
-  UpdateTask(this.task);
+  UpdateTask(this.task, this.revision);
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, revision];
 }
 
-// Событие для удаления задачи
 class DeleteTask extends TaskEvent {
   final String taskId;
+  final int revision;
 
-  DeleteTask(this.taskId);
+  DeleteTask(this.taskId, this.revision);
 
   @override
-  List<Object> get props => [taskId];
+  List<Object> get props => [taskId, revision];
 }
 
-// Событие для отметки задачи как выполненной
 class DoneTask extends TaskEvent {
   final TaskEntity task;
+  final int revision;
 
-  DoneTask(this.task);
+  DoneTask(this.task, this.revision);
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, revision];
 }
 
-// Событие для отметки всех задач как выполненных, кроме переданной задачи
 class DoneList extends TaskEvent {
   final TaskEntity task;
+  final int revision;
 
-  DoneList(this.task);
+  DoneList(this.task, this.revision);
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, revision];
 }

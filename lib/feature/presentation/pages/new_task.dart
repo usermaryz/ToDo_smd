@@ -254,14 +254,14 @@ class _NewTaskState extends State<NewTask> {
       deadline: selectedDate,
       createdAt: widget.task?.createdAt ?? DateTime.now(),
       changedAt: DateTime.now(),
-      lastUpdatedBy: 'userId',
+      lastUpdatedBy: '123',
     );
 
     if (widget.task != null) {
-      taskBloc.add(UpdateTask(newTask));
+      taskBloc.add(UpdateTask(newTask, revision ?? 10));
       AppLogger.i('Task updated: $newTask');
     } else {
-      taskBloc.add(AddTask(newTask));
+      taskBloc.add(AddTask(newTask, revision ?? 10));
       AppLogger.i('New task added: $newTask');
     }
 
@@ -269,7 +269,7 @@ class _NewTaskState extends State<NewTask> {
   }
 
   void _deleteTask(TaskBloc taskBloc) {
-    taskBloc.add(DeleteTask(id!));
+    taskBloc.add(DeleteTask(id!, revision ?? 10));
     Navigator.of(context).pop();
   }
 }

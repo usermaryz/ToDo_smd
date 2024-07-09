@@ -1,19 +1,20 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '/feature/domain/entities/task_entity.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
+import '/feature/domain/entities/task_entity.dart';
+import 'rest_client.dart';
+import 'dio_client.dart';
 
 class ApiService {
-  final Dio dio;
+  final DioClient _dioClient;
 
-  ApiService(this.dio);
+  ApiService(this._dioClient);
 
   Future<List<TaskEntity>> getList() async {
     try {
-      final response = await dio.get('/list');
+      final response = await _dioClient.dio.get('/list');
       if (response.data['status'] == 'ok') {
-        List<TaskEntity> tasks = (response.data['list'] as List).map((task) => TaskEntity.fromJson(task)).toList();
+        List<TaskEntity> tasks = (response.data['list'] as List)
+            .map((task) => TaskEntity.fromJson(task))
+            .toList();
         return tasks;
       } else {
         throw Exception('Failed to load tasks');
@@ -23,11 +24,12 @@ class ApiService {
     }
   }
 
-  Future<void> updateList(List<TaskEntity> tasks) async {
+  Future<void> updateList(List<TaskEntity> tasks, int revision) async {
     try {
-      final response = await dio.patch(
+      final response = await _dioClient.dio.patch(
         '/list',
         data: {'list': tasks.map((task) => task.toJson()).toList()},
+        options: Options(headers: {'X-Last-Known-Revision': revision}),
       );
       if (response.data['status'] != 'ok') {
         throw Exception('Failed to update tasks');
@@ -39,7 +41,7 @@ class ApiService {
 
   Future<TaskEntity> getTaskById(String id) async {
     try {
-      final response = await dio.get('/list/$id');
+      final response = await _dioClient.dio.get('/list/$id');
       if (response.data['status'] == 'ok') {
         return TaskEntity.fromJson(response.data['element']);
       } else {
@@ -50,12 +52,14 @@ class ApiService {
     }
   }
 
-  Future<TaskEntity> addTask(TaskEntity task) async {
+  Future<TaskEntity> addTask(TaskEntity task, int revision) async {
     try {
-      final response = await dio.post(
+      final response = await _dioClient.dio.post(
         '/list',
         data: task.toJson(),
+        options: Options(headers: {'X-Last-Known-Revision': revision}),
       );
+      print(response.statusCode);
       if (response.data['status'] == 'ok') {
         return TaskEntity.fromJson(response.data['element']);
       } else {
@@ -66,11 +70,12 @@ class ApiService {
     }
   }
 
-  Future<TaskEntity> updateTask(TaskEntity task) async {
+  Future<TaskEntity> updateTask(TaskEntity task, int revision) async {
     try {
-      final response = await dio.put(
+      final response = await _dioClient.dio.put(
         '/list/${task.id}',
         data: task.toJson(),
+        options: Options(headers: {'X-Last-Known-Revision': revision}),
       );
       if (response.data['status'] == 'ok') {
         return TaskEntity.fromJson(response.data['element']);
@@ -82,9 +87,12 @@ class ApiService {
     }
   }
 
-  Future<TaskEntity> deleteTask(String id) async {
+  Future<TaskEntity> deleteTask(String id, int revision) async {
     try {
-      final response = await dio.delete('/list/$id');
+      final response = await _dioClient.dio.delete(
+        '/list/$id',
+        options: Options(headers: {'X-Last-Known-Revision': revision}),
+      );
       if (response.data['status'] == 'ok') {
         return TaskEntity.fromJson(response.data['element']);
       } else {

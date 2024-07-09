@@ -61,11 +61,14 @@ class _TodoListState extends State<TodoList> {
                       return TaskItem(
                         task: filteredTasks[index],
                         onToggleCompleted: (bool isCompleted) {
-                          taskBloc.add(DoneTask(filteredTasks[index]));
+                          //TODO: revision
+                          taskBloc.add(DoneTask(filteredTasks[index], 0));
                           setState(() {});
                         },
                         onDelete: () {
-                          taskBloc.add(DeleteTask(filteredTasks[index].id));
+                          //TODO:revision
+                          taskBloc.add(DeleteTask(
+                              (filteredTasks[index].id).toString(), 0));
                         },
                       );
                     },
