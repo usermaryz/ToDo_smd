@@ -7,6 +7,7 @@ import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
+import 'dart:io';
 
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
@@ -40,10 +41,12 @@ class _NewTaskState extends State<NewTask> {
       id = widget.task!.id;
       _importance = widget.task!.importance;
       selectedDate = widget.task!.deadline;
+      createdAt = widget.task!.createdAt;
       switchValue = widget.task!.deadline != null;
       deleteButton = true;
     } else {
       _taskController = TextEditingController();
+      createdAt = DateTime.now();
     }
 
     AppLogger.d('NewTask screen initialized');
@@ -264,12 +267,15 @@ class _NewTaskState extends State<NewTask> {
       taskBloc.add(AddTask(newTask, revision ?? 10));
       AppLogger.i('New task added: $newTask');
     }
-
-    Navigator.of(context).pop();
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.of(context).pop();
+    });
   }
 
   void _deleteTask(TaskBloc taskBloc) {
     taskBloc.add(DeleteTask(id!, revision ?? 10));
-    Navigator.of(context).pop();
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.of(context).pop();
+    });
   }
 }

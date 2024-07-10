@@ -24,7 +24,7 @@ void main() async {
   //final syncManager = SyncManager(taskBox: taskBox, restClient: client);
   //await syncManager.syncTasks();
 
-  final connectivityResult = await (Connectivity().checkConnectivity());
+  final connectivityResult = await (Connectivity().checkConnectivity() );
 
   if (connectivityResult == ConnectivityResult.none) {
     runApp(NoInternetApp());
