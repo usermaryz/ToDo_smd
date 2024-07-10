@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '/feature/presentation/pages/home.dart';
+import '/feature/presentation/pages/new_task.dart';
+import '/feature/domain/entities/task_entity.dart';
 import 'app_routes.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<AppRoutes> {

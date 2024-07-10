@@ -49,12 +49,13 @@ class TaskEntity extends HiveObject {
       id: json['id'] as String,
       text: json['text'] as String,
       importance: json['importance'] as String,
-      deadline:
-          json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
+      deadline: json['deadline'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['deadline'] as int)
+          : null,
       done: json['done'] as bool,
       color: json['color'] as String?,
-      createdAt: DateTime.parse(json['created_at']),
-      changedAt: DateTime.parse(json['changed_at']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
+      changedAt: DateTime.fromMillisecondsSinceEpoch(json['changed_at'] as int),
       lastUpdatedBy: json['last_updated_by'] as String,
     );
   }

@@ -3,18 +3,18 @@ import '/feature/presentation/pages/home.dart';
 import '/feature/presentation/pages/new_task.dart';
 import '/feature/domain/entities/task_entity.dart';
 import 'app_routes.dart';
+import '/router/app_route_inf_parser.dart';
 
 class AppRouterDelegate extends RouterDelegate<AppRoutes>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutes> {
   @override
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  AppRoutes? _currentRoute;
+  AppRoutes _currentRoute = AppRoutes.home;
   TaskEntity? selectedTask;
-  AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  AppRoutes? get currentConfiguration => _currentRoute;
+  AppRoutes get currentConfiguration => _currentRoute;
 
   void handleNavigation(AppRoutes route, {TaskEntity? task}) {
     _currentRoute = route;
@@ -27,24 +27,29 @@ class AppRouterDelegate extends RouterDelegate<AppRoutes>
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (_currentRoute == null || _currentRoute == AppRoutes.home)
-          const MaterialPage(child: Home()),
+        MaterialPage(
+          key: ValueKey(AppRoutes.home),
+          child: Home(),
+        ),
         if (_currentRoute == AppRoutes.newTask)
           if (selectedTask != null)
-            MaterialPage(child: NewTask(task: selectedTask!))
+            MaterialPage(
+              key: ValueKey(AppRoutes.newTask),
+              child: NewTask(task: selectedTask!),
+            )
           else
-            const MaterialPage(child: NewTask()),
+            const MaterialPage(
+              key: ValueKey(AppRoutes.newTask),
+              child: NewTask(),
+            ),
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
           return false;
         }
-        _currentRoute = AppRoutes.home;
-        selectedTask = null;
-        notifyListeners();
+        handleNavigation(AppRoutes.home);
         return true;
       },
-      transitionDelegate: NoAnimationTransitionDelegate(),
     );
   }
 
@@ -54,15 +59,16 @@ class AppRouterDelegate extends RouterDelegate<AppRoutes>
   }
 }
 
-class NoAnimationTransitionDelegate extends TransitionDelegate<void> {
+class MyApp extends StatelessWidget {
+  final AppRouterDelegate _routerDelegate = AppRouterDelegate();
+  final AppRouteInformationParser _routeInformationParser =
+      AppRouteInformationParser();
+
   @override
-  Iterable<RouteTransitionRecord> resolve({
-    required List<RouteTransitionRecord> newPageRouteHistory,
-    required Map<RouteTransitionRecord?, RouteTransitionRecord>
-        locationToExitingPageRoute,
-    required Map<RouteTransitionRecord?, List<RouteTransitionRecord>>
-        pageRouteToPagelessRoutes,
-  }) {
-    return newPageRouteHistory;
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeInformationParser,
+    );
   }
 }

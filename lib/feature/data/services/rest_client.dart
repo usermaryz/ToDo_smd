@@ -10,17 +10,14 @@ class RestClient {
 
   Future<List<TaskEntity>> getTasks() => apiService.getList();
 
-  Future<void> updateTasks(List<TaskEntity> tasks, int revision) =>
-      apiService.updateList(tasks, revision);
+  Future<void> updateTasks(List<TaskEntity> tasks) =>
+      apiService.updateList(tasks);
 
   Future<TaskEntity> getTask(String id) => apiService.getTaskById(id);
 
-  Future<TaskEntity> addTask(TaskEntity task, int revision) =>
-      apiService.addTask(task, revision);
+  Future<TaskEntity> addTask(TaskEntity task) => apiService.addTask(task);
 
-  Future<TaskEntity> updateTask(TaskEntity task, int revision) =>
-      apiService.updateTask(task, revision);
+  Future<TaskEntity> updateTask(TaskEntity task) => apiService.updateTask(task);
 
-  Future<TaskEntity> deleteTask(String id, int revision) =>
-      apiService.deleteTask(id, revision);
+  Future<TaskEntity> deleteTask(String id) => apiService.deleteTask(id);
 }

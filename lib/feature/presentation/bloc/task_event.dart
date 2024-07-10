@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import '/feature/domain/entities/task_entity.dart';
 
 abstract class TaskEvent extends Equatable {
+  const TaskEvent();
+
   @override
   List<Object> get props => [];
 }
@@ -10,50 +12,45 @@ class LoadTasks extends TaskEvent {}
 
 class AddTask extends TaskEvent {
   final TaskEntity task;
-  final int revision;
 
-  AddTask(this.task, this.revision);
+  const AddTask(this.task);
 
   @override
-  List<Object> get props => [task, revision];
+  List<Object> get props => [task];
 }
 
 class UpdateTask extends TaskEvent {
   final TaskEntity task;
-  final int revision;
 
-  UpdateTask(this.task, this.revision);
+  const UpdateTask(this.task);
 
   @override
-  List<Object> get props => [task, revision];
+  List<Object> get props => [task];
 }
 
 class DeleteTask extends TaskEvent {
   final String taskId;
-  final int revision;
 
-  DeleteTask(this.taskId, this.revision);
+  const DeleteTask(this.taskId);
 
   @override
-  List<Object> get props => [taskId, revision];
+  List<Object> get props => [taskId];
 }
 
 class DoneTask extends TaskEvent {
   final TaskEntity task;
-  final int revision;
 
-  DoneTask(this.task, this.revision);
+  const DoneTask(this.task);
 
   @override
-  List<Object> get props => [task, revision];
+  List<Object> get props => [task];
 }
 
 class DoneList extends TaskEvent {
-  final TaskEntity task;
-  final int revision;
+  final List<TaskEntity> task;
 
-  DoneList(this.task, this.revision);
+  const DoneList(this.task);
 
   @override
-  List<Object> get props => [task, revision];
+  List<Object> get props => [task];
 }

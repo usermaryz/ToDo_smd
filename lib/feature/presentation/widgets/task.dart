@@ -71,13 +71,13 @@ class TaskItem extends StatelessWidget {
                 width: 2,
                 color: task.done
                     ? tdGreen
-                    : task.importance == 1
+                    : task.importance == 'important'
                         ? tdRed
                         : tdGrey,
               ),
               color: task.done
                   ? tdGreen
-                  : task.importance == 1
+                  : task.importance == 'important'
                       ? tdRed.withOpacity(0.5)
                       : tdWhite,
             ),
@@ -92,9 +92,9 @@ class TaskItem extends StatelessWidget {
         ),
         title: Row(
           children: [
-            if (task.importance == 1)
+            if (task.importance == 'important')
               const Icon(Icons.priority_high, color: tdRed, size: 16)
-            else if (task.importance == 3)
+            else if (task.importance == 'low')
               const Icon(Icons.arrow_downward, color: tdGrey, size: 16),
             const SizedBox(width: 2),
             Expanded(

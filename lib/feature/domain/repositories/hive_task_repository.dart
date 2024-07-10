@@ -10,57 +10,59 @@ class HiveTaskRepository implements TaskRepository {
   HiveTaskRepository(this.taskBox, this.client);
 
   @override
-  List<TaskEntity> getTasks() {
+  Future<List<TaskEntity>> getTasks() async {
     return taskBox.values.toList();
   }
 
   @override
-  void addTask(TaskEntity task, int revision) {
-    taskBox.add(task);
-    client.addTask(task, revision);
+  Future<void> addTask(TaskEntity task) async {
+    await taskBox.add(task);
+    await client.addTask(task);
   }
 
   @override
-  void updateTask(TaskEntity task, int revision) {
+  Future<void> updateTask(TaskEntity task) async {
     final taskKey = taskBox.keys.firstWhere(
         (key) => taskBox.get(key)?.id == task.id,
         orElse: () => null);
     if (taskKey != null) {
-      taskBox.put(taskKey, task);
-      client.updateTask(task, revision);
+      await taskBox.put(taskKey, task);
+      await client.updateTask(task);
     }
   }
 
   @override
-  void deleteTask(String id, int revision) {
+  Future<void> deleteTask(String id) async {
     final taskKey = taskBox.keys
         .firstWhere((key) => taskBox.get(key)?.id == id, orElse: () => null);
     if (taskKey != null) {
-      taskBox.delete(taskKey);
-      client.deleteTask(id.toString(), revision);
+      await taskBox.delete(taskKey);
+      await client.deleteTask(id);
     }
   }
 
   @override
-  void doneTask(TaskEntity task, int revision) {
+  Future<void> doneTask(TaskEntity task) async {
     final taskKey = taskBox.keys.firstWhere(
         (key) => taskBox.get(key)?.id == task.id,
         orElse: () => null);
     if (taskKey != null) {
       final updatedTask = task.copyWith(done: !task.done);
-      taskBox.put(taskKey, updatedTask);
-      client.updateTask(updatedTask, revision);
+      await taskBox.put(taskKey, updatedTask);
+      await client.updateTask(updatedTask);
     }
   }
 
   @override
-  void doneList(TaskEntity doneTask, int revision) {
-    for (var key in taskBox.keys) {
-      final task = taskBox.get(key);
-      if (task != null && task.id != doneTask.id) {
+  Future<void> doneList(List<TaskEntity> tasks) async {
+    for (var task in tasks) {
+      final taskKey = taskBox.keys.firstWhere(
+          (key) => taskBox.get(key)?.id == task.id,
+          orElse: () => null);
+      if (taskKey != null) {
         final updatedTask = task.copyWith(done: true);
-        taskBox.put(key, updatedTask);
-        client.updateTask(updatedTask, revision);
+        await taskBox.put(taskKey, updatedTask);
+        await client.updateTask(updatedTask);
       }
     }
   }

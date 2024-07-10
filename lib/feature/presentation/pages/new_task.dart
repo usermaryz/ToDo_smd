@@ -261,10 +261,10 @@ class _NewTaskState extends State<NewTask> {
     );
 
     if (widget.task != null) {
-      taskBloc.add(UpdateTask(newTask, revision ?? 10));
+      taskBloc.add(UpdateTask(newTask));
       AppLogger.i('Task updated: $newTask');
     } else {
-      taskBloc.add(AddTask(newTask, revision ?? 10));
+      taskBloc.add(AddTask(newTask));
       AppLogger.i('New task added: $newTask');
     }
     Future.delayed(Duration(milliseconds: 100), () {
@@ -273,7 +273,7 @@ class _NewTaskState extends State<NewTask> {
   }
 
   void _deleteTask(TaskBloc taskBloc) {
-    taskBloc.add(DeleteTask(id!, revision ?? 10));
+    taskBloc.add(DeleteTask(id!));
     Future.delayed(Duration(milliseconds: 100), () {
       Navigator.of(context).pop();
     });
