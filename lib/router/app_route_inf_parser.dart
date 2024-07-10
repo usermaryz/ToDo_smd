@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import '/feature/presentation/pages/home.dart';
-import '/feature/presentation/pages/new_task.dart';
-import '/feature/domain/entities/task_entity.dart';
 import 'app_routes.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<AppRoutes> {
   @override
   Future<AppRoutes> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location!);
+    final uri = Uri.parse(routeInformation.location);
 
     if (uri.pathSegments.isEmpty) {
       return AppRoutes.home;

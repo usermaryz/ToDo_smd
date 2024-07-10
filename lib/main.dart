@@ -7,7 +7,6 @@ import '/feature/data/services/rest_client.dart';
 import '/my_app.dart';
 import '/feature/presentation/pages/no_internet_page.dart';
 import '/feature/data/services/sync_manager.dart';
-import '/feature/data/services/api_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

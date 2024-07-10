@@ -1,12 +1,7 @@
 import 'package:dio/dio.dart';
 import '/feature/domain/entities/task_entity.dart';
-import 'rest_client.dart';
 import 'dio_client.dart';
-
-import 'package:dio/dio.dart';
-import '/feature/domain/entities/task_entity.dart';
-import 'rest_client.dart';
-import 'dio_client.dart';
+import '/utils/logger.dart';
 
 class ApiService {
   final DioClient _dioClient;
@@ -30,6 +25,12 @@ class ApiService {
       } else {
         throw Exception('Failed to load tasks');
       }
+    } on DioException catch (e) {
+      AppLogger.e('Error in getList: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -46,6 +47,12 @@ class ApiService {
         throw Exception('Failed to update tasks');
       }
       _updateRevision(response.data['revision']);
+    } on DioException catch (e) {
+      AppLogger.e('Error in updateList: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -59,6 +66,12 @@ class ApiService {
       } else {
         throw Exception('Failed to load task');
       }
+    } on DioException catch (e) {
+      AppLogger.e('Error in getTaskById: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -77,8 +90,13 @@ class ApiService {
       } else {
         throw Exception('Failed to add task');
       }
+    } on DioException catch (e) {
+      AppLogger.e('Error in addTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
-      print('Error in addTask: $e');
       rethrow;
     }
   }
@@ -99,8 +117,13 @@ class ApiService {
       _updateRevision(response.data['revision']);
 
       return newTask;
+    } on DioException catch (e) {
+      AppLogger.e('Error in updateTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
-      print('Error in updateTask: $e');
       rethrow;
     }
   }
@@ -117,8 +140,13 @@ class ApiService {
       } else {
         throw Exception('Failed to delete task');
       }
+    } on DioException catch (e) {
+      AppLogger.e('Error in deleteTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
     } catch (e) {
-      print('Error in deleteTask: $e');
       rethrow;
     }
   }

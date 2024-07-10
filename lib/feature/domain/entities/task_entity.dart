@@ -1,6 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
-
 part 'task_entity.g.dart';
 
 @HiveType(typeId: 0)
