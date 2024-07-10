@@ -13,6 +13,7 @@ class SyncManager {
     for (var task in serverTasks) {
       if (!taskBox.values.contains(task)) {
         taskBox.add(task);
+        
       }
     }
   }

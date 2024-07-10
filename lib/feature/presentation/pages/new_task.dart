@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
@@ -7,7 +8,6 @@ import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
-import 'dart:io';
 
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
@@ -250,7 +250,7 @@ class _NewTaskState extends State<NewTask> {
     }
 
     final newTask = TaskEntity(
-      id: widget.task?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: widget.task?.id ?? const Uuid().v4(),
       text: _taskController.text,
       importance: _importance,
       done: widget.task?.done ?? false,
@@ -267,14 +267,14 @@ class _NewTaskState extends State<NewTask> {
       taskBloc.add(AddTask(newTask));
       AppLogger.i('New task added: $newTask');
     }
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       Navigator.of(context).pop();
     });
   }
 
   void _deleteTask(TaskBloc taskBloc) {
     taskBloc.add(DeleteTask(id!));
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       Navigator.of(context).pop();
     });
   }
