@@ -29,7 +29,8 @@ class HiveTaskRepository implements TaskRepository {
     if (taskKey != null) {
       await taskBox.put(taskKey, task);
       await client.updateTask(task);
-    } else {
+    }
+    else {
       throw Exception('Task not found');
     }
   }
@@ -41,7 +42,8 @@ class HiveTaskRepository implements TaskRepository {
     if (taskKey != null) {
       await taskBox.delete(taskKey);
       await client.deleteTask(id);
-    } else {
+    }
+    else {
       throw Exception('Task not found');
     }
   }
@@ -55,7 +57,8 @@ class HiveTaskRepository implements TaskRepository {
       final updatedTask = task.copyWith(done: !task.done);
       await taskBox.put(taskKey, updatedTask);
       await client.updateTask(updatedTask);
-    } else {
+    }
+     else {
       throw Exception('Task not found');
     }
   }
@@ -70,7 +73,8 @@ class HiveTaskRepository implements TaskRepository {
         final updatedTask = task.copyWith(done: true);
         await taskBox.put(taskKey, updatedTask);
         await client.updateTask(updatedTask);
-      } else {
+      }
+      else {
         throw Exception('Task not found');
       }
     }
