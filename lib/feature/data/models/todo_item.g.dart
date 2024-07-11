@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+/*// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'todo_item.dart';
 
@@ -29,3 +29,4 @@ Map<String, dynamic> _$TodoItemToJson(TodoItem instance) => <String, dynamic>{
       'changedAt': instance.changedAt,
       'lastUpdatedBy': instance.lastUpdatedBy,
     };
+*/

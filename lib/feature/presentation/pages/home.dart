@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   void initState() {
     scrollController.addListener(() {
       bool? newRenderButtonHeader;
-      if (scrollController.offset > 120) {
+      if (scrollController.offset > 80) {
         newRenderButtonHeader = true;
       } else {
         newRenderButtonHeader = false;
@@ -52,17 +52,19 @@ class _HomeState extends State<Home> {
     taskBloc.add(LoadTasks());
 
     return Scaffold(
-      backgroundColor: backPrimary,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final routerDelegate =
-              Router.of(context).routerDelegate as AppRouterDelegate;
-          routerDelegate.handleNavigation(AppRoutes.newTask);
-        },
-        shape: const CircleBorder(),
-        backgroundColor: tdBlue,
-        child: const Icon(Icons.add, color: tdWhite),
-      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              final routerDelegate =
+                  Router.of(context).routerDelegate as AppRouterDelegate;
+              routerDelegate.handleNavigation(AppRoutes.newTask);
+            },
+            shape: const CircleBorder(),
+            backgroundColor: Theme.of(context).textTheme.labelLarge?.color,
+            child: const Icon(Icons.add, color: tdWhite),
+          )),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: CustomScrollView(
         controller: scrollController,
@@ -70,7 +72,8 @@ class _HomeState extends State<Home> {
           SliverAppBar(
             pinned: true,
             expandedHeight: 80,
-            backgroundColor: backPrimary,
+            toolbarHeight: 80,
+            backgroundColor: Theme.of(context).primaryColor,
             onStretchTrigger: () async {},
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(top: 50, left: 50),
@@ -78,11 +81,10 @@ class _HomeState extends State<Home> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   Messages.appTitle,
-                  style: const TextStyle(
-                    color: labPrimary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ),
             ),
@@ -94,6 +96,7 @@ class _HomeState extends State<Home> {
                     showCompletedTasks
                         ? Icons.visibility_off
                         : Icons.visibility,
+                    color: Theme.of(context).textTheme.labelLarge?.color,
                   ),
                 ),
             ],
@@ -115,8 +118,10 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(left: 50),
                           child: Text(
                             '${Messages.completed} - $completedTasksCount',
-                            style: const TextStyle(
-                                color: labTernitary, fontSize: 16),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontSize: 16,
+                                    ),
                           ),
                         ),
                         IconButton(
@@ -125,6 +130,8 @@ class _HomeState extends State<Home> {
                             showCompletedTasks
                                 ? Icons.visibility_off
                                 : Icons.visibility,
+                            color:
+                                Theme.of(context).textTheme.labelLarge?.color,
                           ),
                         ),
                       ],
@@ -151,7 +158,7 @@ class HomeBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(height: 20),
+        Container(height: 40),
         TodoList(showCompletedTasks: showCompletedTasks),
         const SizedBox(
           height: 40,
@@ -160,34 +167,3 @@ class HomeBody extends StatelessWidget {
     );
   }
 }
-
-/*class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  @override
-  double get minExtent => minHeight;
-  @override
-  double get maxExtent => max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
-*/

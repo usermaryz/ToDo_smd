@@ -35,7 +35,7 @@ class _TodoListState extends State<TodoList> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Container(
             decoration: BoxDecoration(
-              color: tdWhite,
+              color: Theme.of(context).inputDecorationTheme.fillColor,
               shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
               boxShadow: [
@@ -65,8 +65,8 @@ class _TodoListState extends State<TodoList> {
                           setState(() {});
                         },
                         onDelete: () {
-                          taskBloc.add(DeleteTask(
-                              (filteredTasks[index].id).toString()));
+                          taskBloc.add(
+                              DeleteTask((filteredTasks[index].id).toString()));
                         },
                       );
                     },
@@ -83,11 +83,11 @@ class _TodoListState extends State<TodoList> {
                     height: 40,
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        Messages.newTask,
-                        style:
-                            const TextStyle(color: labTernitary, fontSize: 16),
-                      ),
+                      child: Text(Messages.newTask,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontSize: 16)),
                     ),
                   ),
                 ],

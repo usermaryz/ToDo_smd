@@ -22,7 +22,7 @@ class TaskItem extends StatelessWidget {
     return Dismissible(
       key: ValueKey(task.id),
       background: Container(
-        color: tdGreen,
+        color: Theme.of(context).textTheme.headlineLarge?.color,
         child: const Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -35,14 +35,14 @@ class TaskItem extends StatelessWidget {
         ),
       ),
       secondaryBackground: Container(
-        color: tdRed,
+        color: Theme.of(context).textTheme.labelMedium?.color,
         child: const Align(
           alignment: Alignment.centerRight,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Icon(
               Icons.delete,
-              color: Colors.white,
+              color: tdWhite,
             ),
           ),
         ),
@@ -76,15 +76,15 @@ class TaskItem extends StatelessWidget {
                         : tdGrey,
               ),
               color: task.done
-                  ? tdGreen
+                  ? Theme.of(context).textTheme.headlineLarge?.color
                   : task.importance == 'important'
                       ? tdRed.withOpacity(0.5)
-                      : tdWhite,
+                      : Theme.of(context).inputDecorationTheme.fillColor,
             ),
             child: task.done
-                ? const Icon(
+                ? Icon(
                     Icons.check,
-                    color: tdWhite,
+                    color: Theme.of(context).inputDecorationTheme.fillColor,
                     size: 16.0,
                   )
                 : const SizedBox(),
@@ -93,22 +93,28 @@ class TaskItem extends StatelessWidget {
         title: Row(
           children: [
             if (task.importance == 'important')
-              const Icon(Icons.priority_high, color: tdRed, size: 16)
+              Icon(Icons.priority_high,
+                  color: Theme.of(context).textTheme.labelMedium?.color,
+                  size: 16)
             else if (task.importance == 'low')
-              const Icon(Icons.arrow_downward, color: tdGrey, size: 16),
+              Icon(Icons.arrow_downward,
+                  color: Theme.of(context).textTheme.labelSmall?.color,
+                  size: 16),
             const SizedBox(width: 2),
             Expanded(
               child: Text(
                 task.text,
-                maxLines: 1,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 16,
                   decoration: task.done
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
-                  decorationColor: labTernitary,
-                  color: task.done ? labTernitary : labPrimary,
+                  decorationColor: Theme.of(context).textTheme.bodySmall?.color,
+                  color: task.done
+                      ? Theme.of(context).textTheme.bodySmall?.color
+                      : Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
             ),
@@ -117,15 +123,13 @@ class TaskItem extends StatelessWidget {
         subtitle: task.deadline != null
             ? Text(
                 '${Messages.doBefore}: ${task.deadline!.day}/${task.deadline!.month}/${task.deadline!.year}',
-                style: const TextStyle(
-                  color: labTernitary,
-                  fontSize: 14,
-                ),
-              )
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 14,
+                    ))
             : null,
         trailing: IconButton(
           icon: const Icon(Icons.info),
-          color: supSeparetor,
+          color: Theme.of(context).textTheme.labelSmall?.color,
           iconSize: 25.0,
           onPressed: () {
             final routerDelegate =

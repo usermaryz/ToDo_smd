@@ -8,7 +8,7 @@ class Messages {
   static String get newTaskHint =>
       Intl.message('Что надо сделать...', name: 'newTaskHint');
   static String get priority => Intl.message('Приоритет', name: 'priority');
-  static String get high => Intl.message('Высокий', name: 'high');
+  static String get high => Intl.message('! Высокий', name: 'high');
   static String get medium => Intl.message('Средний', name: 'medium');
   static String get low => Intl.message('Низкий', name: 'low');
   static String get selectDate =>

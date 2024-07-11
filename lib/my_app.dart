@@ -6,7 +6,7 @@ import '/feature/domain/entities/task_entity.dart';
 import 'router/app_router.dart';
 import '/router/app_route_inf_parser.dart';
 import '/feature/presentation/bloc/task_provider.dart';
-import '/constants/colors.dart';
+import '/constants/themes.dart';
 
 class MyApp extends StatelessWidget {
   final Box<TaskEntity> taskBox;
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           Locale('en', 'EN'),
           Locale('ru', 'RU'),
         ],
-        locale: const Locale('en'),
+        locale: const Locale('ru'),
         title: 'ToDo App',
         theme: lightTheme,
         darkTheme: darkTheme,

@@ -35,7 +35,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
             child: InkWell(
               onTap: () => _selectDate(context),
               child: Container(
-                color: backPrimary,
+                color: Theme.of(context).primaryColor,
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
@@ -60,15 +60,22 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2025),
-      locale: const Locale('ru', 'RU'),
+      locale: Localizations.localeOf(context),
       builder: (BuildContext context, Widget? child) {
         return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: Colors.blue,
-            colorScheme: const ColorScheme.light(primary: Colors.blue),
-            buttonTheme:
-                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
-          ),
+          data: Theme.of(context).brightness == Brightness.light
+              ? ThemeData.light().copyWith(
+                  primaryColor: tdBlue,
+                  colorScheme: const ColorScheme.light(primary: tdBlue),
+                  buttonTheme:
+                      const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                )
+              : ThemeData.dark().copyWith(
+                  primaryColor: tdBlueDark,
+                  colorScheme: const ColorScheme.dark(primary: tdBlueDark),
+                  buttonTheme:
+                      const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                ),
           child: child!,
         );
       },

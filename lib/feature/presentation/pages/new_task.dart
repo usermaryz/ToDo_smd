@@ -8,7 +8,6 @@ import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
-
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
 
@@ -64,9 +63,9 @@ class _NewTaskState extends State<NewTask> {
     final taskBloc = TaskProvider.of(context);
 
     return Scaffold(
-      backgroundColor: backPrimary,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: backPrimary,
+        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           onPressed: () {
             final routerDelegate =
@@ -77,8 +76,10 @@ class _NewTaskState extends State<NewTask> {
         ),
         actions: [
           TextButton(
-            child: Text(Messages.saveButton,
-                style: const TextStyle(color: tdBlue)),
+            child: Text(
+              Messages.saveButton,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(),
+            ),
             onPressed: () {
               _saveTask(taskBloc);
             },
@@ -96,40 +97,43 @@ class _NewTaskState extends State<NewTask> {
                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 shadowColor: Colors.grey.withOpacity(0.2),
                 child: TextField(
-                  controller: _taskController,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(16),
-                    fillColor: tdWhite,
-                    filled: true,
-                    hintStyle: const TextStyle(color: labTernitary),
-                    hintText: Messages.newTaskHint,
-                    border: InputBorder.none,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
+                    controller: _taskController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      contentPadding: const EdgeInsets.all(16),
+                      fillColor:
+                          Theme.of(context).inputDecorationTheme.fillColor,
+                      filled: true,
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 16),
+                      hintText: Messages.newTaskHint,
+                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontSize: 16)),
               ),
               const SizedBox(height: 20),
-              const Divider(
-                color: labTernitary,
+              Divider(
+                color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
                 height: 1,
                 thickness: 1,
                 indent: 0,
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              Text(
-                Messages.priority,
-                style: const TextStyle(
-                  fontSize: 16,
-                  decorationColor: labTernitary,
-                  color: labPrimary,
-                ),
-              ),
+              Text(Messages.priority,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontSize: 16, decorationColor: labTernitary)),
               DropdownButton<String>(
                 value: _importance,
                 onChanged: (String? value) {
@@ -142,32 +146,32 @@ class _NewTaskState extends State<NewTask> {
                   DropdownMenuItem<String>(
                     value: 'important',
                     child: Text(Messages.high,
-                        style: const TextStyle(
-                          color: labPrimary,
-                          fontSize: 14,
-                        )),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontSize: 14, color: tdRed)),
                   ),
                   DropdownMenuItem<String>(
                     value: 'basic',
                     child: Text(Messages.medium,
-                        style: const TextStyle(
-                          color: labPrimary,
-                          fontSize: 14,
-                        )),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontSize: 14)),
                   ),
                   DropdownMenuItem<String>(
                     value: 'low',
                     child: Text(Messages.low,
-                        style: const TextStyle(
-                          color: labPrimary,
-                          fontSize: 14,
-                        )),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontSize: 14)),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const Divider(
-                color: labTernitary,
+              Divider(
+                color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
                 height: 1,
                 thickness: 1,
                 indent: 0,
@@ -179,14 +183,14 @@ class _NewTaskState extends State<NewTask> {
                 children: [
                   Text(
                     Messages.selectDate,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: labPrimary,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontSize: 16),
                   ),
                   const SizedBox(width: 10),
                   Switch(
-                    activeColor: tdBlue,
+                    activeColor: Theme.of(context).textTheme.labelLarge?.color,
                     value: switchValue,
                     onChanged: (value) {
                       setState(() {
@@ -212,8 +216,8 @@ class _NewTaskState extends State<NewTask> {
                   },
                 ),
               const SizedBox(height: 20),
-              const Divider(
-                color: labTernitary,
+              Divider(
+                color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
                 height: 1,
                 thickness: 1,
                 indent: 0,
@@ -225,15 +229,21 @@ class _NewTaskState extends State<NewTask> {
                     _deleteTask(taskBloc);
                   },
                   child: Row(children: [
-                    Icon(Icons.delete,
-                        color: deleteButton ? tdRed : labTernitary),
+                    Icon(
+                      Icons.delete,
+                      color: deleteButton
+                          ? Theme.of(context).textTheme.labelMedium?.color
+                          : Theme.of(context).textTheme.bodySmall?.color,
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(Messages.delete,
                         style: TextStyle(
                           fontSize: 16,
-                          color: deleteButton ? tdRed : labTernitary,
+                          color: deleteButton
+                              ? Theme.of(context).textTheme.labelMedium?.color
+                              : Theme.of(context).textTheme.bodySmall?.color,
                         ))
                   ]))
             ],

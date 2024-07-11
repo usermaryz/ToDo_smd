@@ -26,7 +26,7 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       children: [
         Container(
-          color: backPrimary,
+          color: Theme.of(context).primaryColor,
           child: FlexibleSpaceBar(
             titlePadding:
                 EdgeInsets.only(left: isAppBarExpanded ? 50 : 16, bottom: 16),
@@ -34,17 +34,15 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
-                  Text(
-                    Messages.appTitle,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 25,
-                    ),
-                  ),
+                  Text(Messages.appTitle,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          )),
                   Expanded(child: Container()),
                   if (!isAppBarExpanded)
-                    const Icon(Icons.visibility, color: Colors.black),
+                    Icon(Icons.visibility,
+                        color: Theme.of(context).textTheme.labelLarge?.color),
                 ],
               ),
             ),
@@ -57,15 +55,18 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
             opacity: isAppBarExpanded ? 1.0 : 0.0,
             child: Text(
               '${Messages.completed} - $completedTasks',
-              style: const TextStyle(color: Colors.grey, fontSize: 16),
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.labelSmall?.color,
+                  fontSize: 16),
             ),
           ),
         ),
         if (isAppBarExpanded)
-          const Positioned(
+          Positioned(
             right: 16,
             bottom: 10,
-            child: Icon(Icons.visibility, color: Colors.black),
+            child: Icon(Icons.visibility,
+                color: Theme.of(context).textTheme.bodyLarge?.color),
           ),
       ],
     );

@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+/*import 'package:json_annotation/json_annotation.dart';
 
 part 'todo_item.g.dart';
 
@@ -31,3 +31,4 @@ class TodoItem {
 
   Map<String, dynamic> toJson() => _$TodoItemToJson(this);
 }
+*/
