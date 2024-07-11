@@ -1,7 +1,8 @@
 import 'package:hive/hive.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/domain/repositories/task_repository.dart';
-import '/feature/data/services/rest_client.dart'; // Импортируем RestClient
+import '/feature/data/services/rest_client.dart';
+import '/utils/logger.dart';
 
 class HiveTaskRepository implements TaskRepository {
   final Box<TaskEntity> taskBox;
@@ -17,7 +18,13 @@ class HiveTaskRepository implements TaskRepository {
   @override
   Future<void> addTask(TaskEntity task) async {
     await taskBox.add(task);
-    await client.addTask(task);
+    try {
+      await client.addTask(task);
+    } catch (e) {
+      AppLogger.e('Error in addTask: $e');
+      await taskBox.delete(task.id);
+      rethrow;
+    }
   }
 
   @override
@@ -28,9 +35,13 @@ class HiveTaskRepository implements TaskRepository {
     );
     if (taskKey != null) {
       await taskBox.put(taskKey, task);
-      await client.updateTask(task);
-    }
-    else {
+      try {
+        await client.updateTask(task);
+      } catch (e) {
+        AppLogger.e('Error in updateTask: $e');
+        rethrow;
+      }
+    } else {
       throw Exception('Task not found');
     }
   }
@@ -41,9 +52,13 @@ class HiveTaskRepository implements TaskRepository {
         .firstWhere((key) => taskBox.get(key)?.id == id, orElse: () => null);
     if (taskKey != null) {
       await taskBox.delete(taskKey);
-      await client.deleteTask(id);
-    }
-    else {
+      try {
+        await client.deleteTask(id);
+      } catch (e) {
+        AppLogger.e('Error in deleteTask: $e');
+        rethrow;
+      }
+    } else {
       throw Exception('Task not found');
     }
   }
@@ -56,9 +71,13 @@ class HiveTaskRepository implements TaskRepository {
     if (taskKey != null) {
       final updatedTask = task.copyWith(done: !task.done);
       await taskBox.put(taskKey, updatedTask);
-      await client.updateTask(updatedTask);
-    }
-     else {
+      try {
+        await client.updateTask(updatedTask);
+      } catch (e) {
+        AppLogger.e('Error in doneTask: $e');
+        rethrow;
+      }
+    } else {
       throw Exception('Task not found');
     }
   }
@@ -72,9 +91,13 @@ class HiveTaskRepository implements TaskRepository {
       if (taskKey != null) {
         final updatedTask = task.copyWith(done: true);
         await taskBox.put(taskKey, updatedTask);
-        await client.updateTask(updatedTask);
-      }
-      else {
+        try {
+          await client.updateTask(updatedTask);
+        } catch (e) {
+          AppLogger.e('Error in doneList: $e');
+          rethrow;
+        }
+      } else {
         throw Exception('Task not found');
       }
     }

@@ -5,8 +5,7 @@ import '/feature/domain/entities/task_entity.dart';
 class RestClient {
   final ApiService apiService;
 
-  RestClient(String baseUrl, String token)
-      : apiService = ApiService(DioClient(baseUrl, token));
+  RestClient(DioClient dioClient) : apiService = ApiService(dioClient);
 
   Future<List<TaskEntity>> getTasks() => apiService.getList();
 
