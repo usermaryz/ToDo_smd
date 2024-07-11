@@ -6,9 +6,10 @@ import '/feature/presentation/bloc/task_bloc.dart';
 import '/feature/presentation/widgets/date_time.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
+import '/constants/strings.dart';
 
 class NewTask extends StatefulWidget {
-  const NewTask({Key? key}) : super(key: key);
+  const NewTask({super.key});
 
   @override
   _NewTaskState createState() => _NewTaskState();
@@ -65,12 +66,12 @@ class _NewTaskState extends State<NewTask> {
                   controller: _taskController,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(16),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(16),
                     fillColor: tdWhite,
                     filled: true,
-                    hintStyle: TextStyle(color: labTernitary),
-                    hintText: 'Что надо сделать...',
+                    hintStyle: const TextStyle(color: labTernitary),
+                    hintText: Messages.newTaskHint,
                     border: InputBorder.none, // Remove the border
                   ),
                   style: const TextStyle(
@@ -88,9 +89,9 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Приоритет',
-                style: TextStyle(
+              Text(
+                Messages.priority,
+                style: const TextStyle(
                   fontSize: 16,
                   decorationColor: labTernitary,
                   color: labPrimary,
@@ -104,27 +105,27 @@ class _NewTaskState extends State<NewTask> {
                   });
                   AppLogger.d('Importance set to $_importance');
                 },
-                items: const [
+                items: [
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('Высокий',
-                        style: TextStyle(
+                    child: Text(Messages.high,
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
                   DropdownMenuItem<int>(
                     value: 2,
-                    child: Text('Средний',
-                        style: TextStyle(
+                    child: Text(Messages.medium,
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
                   DropdownMenuItem<int>(
                     value: 3,
-                    child: Text('Низкий',
-                        style: TextStyle(
+                    child: Text(Messages.low,
+                        style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
@@ -143,9 +144,9 @@ class _NewTaskState extends State<NewTask> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Выбрать дату',
-                    style: TextStyle(
+                  Text(
+                    Messages.selectDate,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: labPrimary,
                     ),
@@ -165,10 +166,10 @@ class _NewTaskState extends State<NewTask> {
               ),
               if (switchValue)
                 DateTimeWidget(
-                  titleText: 'Сделать до',
+                  titleText: Messages.selectDate,
                   valueText: selectedDate != null
                       ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                      : 'дд/мм/гг',
+                      : Messages.ddmmyy,
                   iconSection: Icons.calendar_today,
                   onTap: (DateTime date) {
                     setState(() {
@@ -186,13 +187,13 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              const Row(children: [
-                Icon(Icons.delete, color: labTernitary),
-                SizedBox(
+              Row(children: [
+                const Icon(Icons.delete, color: labTernitary),
+                const SizedBox(
                   width: 10,
                 ),
-                Text('Удалить',
-                    style: TextStyle(
+                Text(Messages.delete,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: labTernitary,
                     ))

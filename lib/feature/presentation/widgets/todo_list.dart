@@ -7,6 +7,7 @@ import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/colors.dart';
+import '/constants/strings.dart';
 
 class TodoList extends StatefulWidget {
   final bool showCompletedTasks;
@@ -81,11 +82,11 @@ class _TodoListState extends State<TodoList> {
                     elevation: 0,
                     minWidth: double.infinity,
                     height: 40,
-                    child: const Align(
+                    child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Новое',
-                        style: TextStyle(color: labTernitary, fontSize: 16),
+                        Messages.newTask,
+                        style: const TextStyle(color: labTernitary, fontSize: 16),
                       ),
                     ),
                   ),

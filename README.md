@@ -10,6 +10,9 @@ MyApp - это Flutter-приложение для управления зада
 - Переключение отображения выполненных задач
 - Выбор даты с помощью встроенного календаря
 
+- Интернационализация
+- Создание базы данных (и ее локальное хранение)
+
 ## Скриншоты работы
 
 ![alt text](result_img/список2.png)
@@ -34,3 +37,6 @@ MyApp - это Flutter-приложение для управления зада
 
    ```sh
    git clone https://github.com/usermaryz/ToDo_smd.git
+
+### Apk 
+https://github.com/usermaryz/ToDo_smd/releases/tag/v.1

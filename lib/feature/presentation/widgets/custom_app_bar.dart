@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/constants/colors.dart';
+import '/constants/strings.dart';
 
 class CustomAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -33,9 +34,9 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
-                  const Text(
-                    'Мои дела',
-                    style: TextStyle(
+                  Text(
+                    Messages.appTitle,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: 25,
@@ -55,7 +56,7 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
           child: Opacity(
             opacity: isAppBarExpanded ? 1.0 : 0.0,
             child: Text(
-              'Выполнено - $completedTasks',
+              '${Messages.completed} - $completedTasks',
               style: const TextStyle(color: Colors.grey, fontSize: 16),
             ),
           ),

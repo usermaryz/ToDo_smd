@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.3 <3.0.0"
+  sdk: ">=2.17.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,6 +36,15 @@ dependencies:
   flutter_bloc: ^8.0.0
   flutter_localizations:
     sdk: flutter
+  http: ^1.2.0
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.11
+  dio: ^5.4.3+1
+  json_annotation: ^4.0.0
+  google_fonts: ^6.2.0
+  get: ^4.6.1
+  intl: ^0.19.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -46,13 +55,17 @@ dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
   flutter_test:
     sdk: flutter
+  hive_generator: ^2.0.1
+  build_runner: ^2.1.10
+  json_annotation: ^4.0.1
+  json_serializable: ^6.8.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,135 +98,6 @@ flutter:
   assets:
     - assets/icons/icon_app.jpg
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  fonts:
-    - family: SFProDisplay
-      fonts:
-        - asset: fonts/SF-Pro/SF-Pro-Display-Black.otf
-          weight: 900
-        - asset: fonts/SF-Pro/SF-Pro-Display-BlackItalic.otf
-          weight: 900
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Bold.otf
-          weight: 700
-        - asset: fonts/SF-Pro/SF-Pro-Display-BoldItalic.otf
-          weight: 700
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Heavy.otf
-          weight: 800
-        - asset: fonts/SF-Pro/SF-Pro-Display-HeavyItalic.otf
-          weight: 800
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Light.otf
-          weight: 300
-        - asset: fonts/SF-Pro/SF-Pro-Display-LightItalic.otf
-          weight: 300
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Medium.otf
-          weight: 500
-        - asset: fonts/SF-Pro/SF-Pro-Display-MediumItalic.otf
-          weight: 500
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Regular.otf
-        - asset: fonts/SF-Pro/SF-Pro-Display-RegularItalic.otf
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Semibold.otf
-          weight: 600
-        - asset: fonts/SF-Pro/SF-Pro-Display-SemiboldItalic.otf
-          weight: 600
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Thin.otf
-          weight: 100
-        - asset: fonts/SF-Pro/SF-Pro-Display-ThinItalic.otf
-          weight: 100
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Display-Ultralight.otf
-          weight: 200
-        - asset: fonts/SF-Pro/SF-Pro-Display-UltralightItalic.otf
-          weight: 200
-          style: italic
-
-    - family: SFProRounded
-      fonts:
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Black.otf
-          weight: 900
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Bold.otf
-          weight: 700
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Heavy.otf
-          weight: 800
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Light.otf
-          weight: 300
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Medium.otf
-          weight: 500
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Regular.otf
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Semibold.otf
-          weight: 600
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Thin.otf
-          weight: 100
-        - asset: fonts/SF-Pro/SF-Pro-Rounded-Ultralight.otf
-          weight: 200
-
-    - family: SFProText
-      fonts:
-        - asset: fonts/SF-Pro/SF-Pro-Text-Black.otf
-          weight: 900
-        - asset: fonts/SF-Pro/SF-Pro-Text-BlackItalic.otf
-          weight: 900
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Bold.otf
-          weight: 700
-        - asset: fonts/SF-Pro/SF-Pro-Text-BoldItalic.otf
-          weight: 700
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Heavy.otf
-          weight: 800
-        - asset: fonts/SF-Pro/SF-Pro-Text-HeavyItalic.otf
-          weight: 800
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Light.otf
-          weight: 300
-        - asset: fonts/SF-Pro/SF-Pro-Text-LightItalic.otf
-          weight: 300
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Medium.otf
-          weight: 500
-        - asset: fonts/SF-Pro/SF-Pro-Text-MediumItalic.otf
-          weight: 500
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Regular.otf
-        - asset: fonts/SF-Pro/SF-Pro-Text-RegularItalic.otf
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Semibold.otf
-          weight: 600
-        - asset: fonts/SF-Pro/SF-Pro-Text-SemiboldItalic.otf
-          weight: 600
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Thin.otf
-          weight: 100
-        - asset: fonts/SF-Pro/SF-Pro-Text-ThinItalic.otf
-          weight: 100
-          style: italic
-        - asset: fonts/SF-Pro/SF-Pro-Text-Ultralight.otf
-          weight: 200
-        - asset: fonts/SF-Pro/SF-Pro-Text-UltralightItalic.otf
-          weight: 200
-          style: italic
-
-    - family: SFPro
-      fonts:
-        - asset: fonts/SF-Pro/SF-Pro.ttf
-        - asset: fonts/SF-Pro/SF-Pro-Italic.ttf
-          style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

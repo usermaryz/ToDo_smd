@@ -1,11 +1,60 @@
+import 'package:hive/hive.dart';
 import '/feature/domain/entities/task_entity.dart';
+part 'task_model.g.dart';
 
+@HiveType(typeId: 0)
 class TaskModel extends TaskEntity {
+  @override
+  @HiveField(0)
+  final int id;
+
+  @override
+  @HiveField(1)
+  final String description;
+
+  @override
+  @HiveField(2)
+  final int importance;
+
+  @override
+  @HiveField(3)
+  final bool isDone;
+
+  @override
+  @HiveField(4)
+  final DateTime? date;
+
   TaskModel({
-    required super.id,
-    required super.description,
-    super.importance = 2,
-    super.isDone = false,
-    super.date,
-  });
+    required this.id,
+    required this.description,
+    required this.importance,
+    required this.isDone,
+    this.date,
+  }) : super(
+          id: id,
+          description: description,
+          importance: importance,
+          isDone: isDone,
+          date: date,
+        );
+
+  factory TaskModel.fromEntity(TaskEntity entity) {
+    return TaskModel(
+      id: entity.id,
+      description: entity.description,
+      importance: entity.importance,
+      isDone: entity.isDone,
+      date: entity.date,
+    );
+  }
+
+  TaskEntity toEntity() {
+    return TaskEntity(
+      id: id,
+      description: description,
+      importance: importance,
+      isDone: isDone,
+      date: date,
+    );
+  }
 }

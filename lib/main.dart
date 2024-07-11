@@ -3,16 +3,30 @@ import 'feature/presentation/pages/home.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import '/feature/domain/entities/task_entity.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(appDocumentDir.path);
+  Hive.registerAdapter(TaskEntityAdapter());
+  final taskBox = await Hive.openBox<TaskEntity>('tasks');
+
+  runApp(MyApp(taskBox: taskBox));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Box<TaskEntity> taskBox;
+
+  const MyApp({super.key, required this.taskBox});
 
   @override
   Widget build(BuildContext context) {
     return TaskProvider(
+      taskBox: taskBox,
       child: const MaterialApp(
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,

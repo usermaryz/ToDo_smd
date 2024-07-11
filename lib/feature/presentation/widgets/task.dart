@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
+import '/constants/strings.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskEntity task;
@@ -95,9 +96,8 @@ class TaskItem extends StatelessWidget {
             Expanded(
               child: Text(
                 task.description,
-                maxLines: 1, // Ограничение количества строк до одной
-                overflow: TextOverflow
-                    .ellipsis, // Добавление многоточия при переполнении
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 16,
                   decoration: task.isDone
@@ -112,7 +112,7 @@ class TaskItem extends StatelessWidget {
         ),
         subtitle: task.date != null
             ? Text(
-                'сделать до: ${task.date!.day}/${task.date!.month}/${task.date!.year}',
+                '${Messages.doBefore}: ${task.date!.day}/${task.date!.month}/${task.date!.year}',
                 style: const TextStyle(
                   color: labTernitary,
                   fontSize: 14,
