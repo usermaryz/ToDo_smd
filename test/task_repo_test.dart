@@ -5,7 +5,6 @@ import 'package:todo_usermary/feature/presentation/bloc/task_bloc.dart';
 import 'package:todo_usermary/feature/presentation/bloc/task_event.dart';
 import 'package:todo_usermary/feature/domain/repositories/task_repository.dart';
 
-// Моки для зависимостей
 class MockTaskRepository extends Mock implements TaskRepository {}
 
 void main() {
@@ -40,7 +39,6 @@ void main() {
 
     taskBloc.add(LoadTasks());
 
-    print(taskBloc.stream);
     await expectLater(
       taskBloc.stream,
       emitsInOrder([
@@ -49,8 +47,7 @@ void main() {
     );
   });
 
-  test('should add a task and emit new tasks list when AddTask event is added',
-      () async {
+  test('should add a task and emit new tasks list when AddTask event is added', () async {
     when(mockTaskRepository.addTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -68,9 +65,7 @@ void main() {
     );
   });
 
-  test(
-      'should update a task and emit new tasks list when UpdateTask event is added',
-      () async {
+  test('should update a task and emit new tasks list when UpdateTask event is added', () async {
     when(mockTaskRepository.updateTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -88,9 +83,7 @@ void main() {
     );
   });
 
-  test(
-      'should delete a task and emit new tasks list when DeleteTask event is added',
-      () async {
+  test('should delete a task and emit new tasks list when DeleteTask event is added', () async {
     when(mockTaskRepository.deleteTask(uuid)).thenAnswer(
       (_) async => {},
     );
@@ -108,9 +101,7 @@ void main() {
     );
   });
 
-  test(
-      'should mark a task as done and emit new tasks list when DoneTask event is added',
-      () async {
+  test('should mark a task as done and emit new tasks list when DoneTask event is added', () async {
     when(mockTaskRepository.doneTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -128,9 +119,7 @@ void main() {
     );
   });
 
-  test(
-      'should mark a task as done in list and emit new tasks list when DoneList event is added',
-      () async {
+  test('should mark a task as done in list and emit new tasks list when DoneList event is added', () async {
     when(mockTaskRepository.doneList(testTaskList)).thenAnswer(
       (_) async => {},
     );
