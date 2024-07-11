@@ -12,6 +12,11 @@ MyApp - это Flutter-приложение для управления зада
 
 - Интернационализация
 - Создание базы данных (и ее локальное хранение)
+- Обращение к серверу
+
+- Обработка ошибок
+- Обработка потери интернета (offline-first)
+- Навигация
 
 ## Скриншоты работы
 
@@ -39,4 +44,4 @@ MyApp - это Flutter-приложение для управления зада
    git clone https://github.com/usermaryz/ToDo_smd.git
 
 ### Apk 
-https://github.com/usermaryz/ToDo_smd/releases/tag/v.1
+https://github.com/usermaryz/ToDo_smd/releases/tag/v.3
