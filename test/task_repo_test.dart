@@ -34,15 +34,12 @@ void main() {
   final testTaskList = [testTaskEntity];
 
   test('should emit tasks when LoadTasks event is added', () async {
-    // Arrange
     when(mockTaskRepository.getTasks()).thenAnswer(
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(LoadTasks());
 
-    // Assert
     print(taskBloc.stream);
     await expectLater(
       taskBloc.stream,
@@ -54,7 +51,6 @@ void main() {
 
   test('should add a task and emit new tasks list when AddTask event is added',
       () async {
-    // Arrange
     when(mockTaskRepository.addTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -62,10 +58,8 @@ void main() {
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(AddTask(testTaskEntity));
 
-    // Assert
     await expectLater(
       taskBloc.stream,
       emitsInOrder([
@@ -77,7 +71,6 @@ void main() {
   test(
       'should update a task and emit new tasks list when UpdateTask event is added',
       () async {
-    // Arrange
     when(mockTaskRepository.updateTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -85,10 +78,8 @@ void main() {
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(UpdateTask(testTaskEntity));
 
-    // Assert
     await expectLater(
       taskBloc.stream,
       emitsInOrder([
@@ -100,7 +91,6 @@ void main() {
   test(
       'should delete a task and emit new tasks list when DeleteTask event is added',
       () async {
-    // Arrange
     when(mockTaskRepository.deleteTask(uuid)).thenAnswer(
       (_) async => {},
     );
@@ -108,10 +98,8 @@ void main() {
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(const DeleteTask(uuid));
 
-    // Assert
     await expectLater(
       taskBloc.stream,
       emitsInOrder([
@@ -123,7 +111,6 @@ void main() {
   test(
       'should mark a task as done and emit new tasks list when DoneTask event is added',
       () async {
-    // Arrange
     when(mockTaskRepository.doneTask(testTaskEntity)).thenAnswer(
       (_) async => {},
     );
@@ -131,10 +118,8 @@ void main() {
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(DoneTask(testTaskEntity));
 
-    // Assert
     await expectLater(
       taskBloc.stream,
       emitsInOrder([
@@ -146,7 +131,6 @@ void main() {
   test(
       'should mark a task as done in list and emit new tasks list when DoneList event is added',
       () async {
-    // Arrange
     when(mockTaskRepository.doneList(testTaskList)).thenAnswer(
       (_) async => {},
     );
@@ -154,10 +138,8 @@ void main() {
       (_) async => testTaskList,
     );
 
-    // Act
     taskBloc.add(DoneList(testTaskList));
 
-    // Assert
     await expectLater(
       taskBloc.stream,
       emitsInOrder([

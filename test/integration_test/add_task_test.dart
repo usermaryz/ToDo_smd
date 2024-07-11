@@ -10,22 +10,18 @@ void main() {
     app.main();
     await tester.pumpAndSettle();
 
-    // Найдите и нажмите кнопку добавления задачи
     final addTaskButton = find.byIcon(Icons.add);
     await tester.tap(addTaskButton);
     await tester.pumpAndSettle();
 
-    // Найдите текстовое поле для ввода задачи и введите текст
     final taskTextField = find.byType(TextField);
     await tester.enterText(taskTextField, 'New Integration Test Task');
     await tester.pumpAndSettle();
 
-    // Найдите кнопку сохранения и нажмите её
     final saveButton = find.text('Save');
     await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
-    // Убедитесь, что новая задача отображается на экране
     expect(find.text('New Integration Test Task'), findsOneWidget);
   });
 }
