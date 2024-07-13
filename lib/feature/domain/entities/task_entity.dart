@@ -16,7 +16,7 @@ class TaskEntity extends HiveObject {
   final DateTime? deadline;
 
   @HiveField(4)
-  final bool done;
+  bool done;
 
   @HiveField(5)
   final String? color;

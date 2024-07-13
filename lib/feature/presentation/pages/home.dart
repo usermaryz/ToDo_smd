@@ -66,83 +66,111 @@ class _HomeState extends State<Home> {
             child: const Icon(Icons.add, color: tdWhite),
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 80,
-            toolbarHeight: 80,
-            backgroundColor: Theme.of(context).primaryColor,
-            onStretchTrigger: () async {},
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(top: 50, left: 50),
-              title: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  Messages.appTitle,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ),
-            ),
-            actions: [
-              if (renderButtonHeader)
-                IconButton(
-                  onPressed: _toggleShowCompletedTasks,
-                  icon: Icon(
-                    showCompletedTasks
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Theme.of(context).textTheme.labelLarge?.color,
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 80,
+                toolbarHeight: 80,
+                backgroundColor: Theme.of(context).primaryColor,
+                onStretchTrigger: () async {},
+                flexibleSpace: FlexibleSpaceBar(
+                  titlePadding: const EdgeInsets.only(top: 50, left: 50),
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Messages.appTitle,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ),
                 ),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: BlocBuilder<TaskBloc, List<TaskEntity>>(
-              bloc: taskBloc,
-              builder: (context, tasks) {
-                final completedTasksCount =
-                    tasks.where((task) => task.done).length;
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Text(
-                            '${Messages.completed} - $completedTasksCount',
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      fontSize: 16,
-                                    ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: _toggleShowCompletedTasks,
-                          icon: Icon(
-                            showCompletedTasks
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color:
-                                Theme.of(context).textTheme.labelLarge?.color,
-                          ),
-                        ),
-                      ],
+                actions: [
+                  if (renderButtonHeader)
+                    IconButton(
+                      onPressed: _toggleShowCompletedTasks,
+                      icon: Icon(
+                        showCompletedTasks
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Theme.of(context).textTheme.labelLarge?.color,
+                      ),
                     ),
-                    HomeBody(showCompletedTasks: showCompletedTasks),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: BlocBuilder<TaskBloc, List<TaskEntity>>(
+                  bloc: taskBloc,
+                  builder: (context, tasks) {
+                    final completedTasksCount =
+                        tasks.where((task) => task.done).length;
+
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        bool isLargeScreen = constraints.maxWidth > 600;
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 50),
+                                    child: Text(
+                                      '${Messages.completed} - $completedTasksCount',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            fontSize: 16,
+                                          ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: _toggleShowCompletedTasks,
+                                    icon: Icon(
+                                      showCompletedTasks
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge
+                                          ?.color,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              isLargeScreen
+                                  ? Row(
+                                      children: [
+                                        Expanded(
+                                          child: HomeBody(
+                                              showCompletedTasks:
+                                                  showCompletedTasks),
+                                        ),
+                                      ],
+                                    )
+                                  : HomeBody(
+                                      showCompletedTasks: showCompletedTasks),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

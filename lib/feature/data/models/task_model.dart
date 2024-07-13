@@ -1,66 +1,25 @@
 import 'package:hive/hive.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import '/feature/domain/entities/task_entity.dart';
 part 'task_model.g.dart';
+part 'task_model.freezed.dart';
 
-@HiveType(typeId: 0)
-class TaskModel extends TaskEntity {
-  @override
-  @HiveField(0)
-  final String id;
+@freezed
+class TaskModel with _$TaskModel {
+  @HiveType(typeId: 0)
+  const factory TaskModel({
+    @HiveField(0) required String id,
+    @HiveField(1) required String text,
+    @HiveField(2) required String importance,
+    @HiveField(3) required bool done,
+    @HiveField(4) DateTime? deadline,
+    @HiveField(5) String? color,
+    @HiveField(6) required DateTime createdAt,
+    @HiveField(7) required DateTime changedAt,
+    @HiveField(8) required String lastUpdatedBy,
+  }) = _TaskModel;
 
-  @override
-  @HiveField(1)
-  final String text;
-
-  @override
-  @HiveField(2)
-  final String importance;
-
-  @override
-  @HiveField(3)
-  final bool done;
-
-  @override
-  @HiveField(4)
-  final DateTime? deadline;
-
-  @override
-  @HiveField(5)
-  final String? color;
-
-  @override
-  @HiveField(6)
-  final DateTime createdAt;
-
-  @override
-  @HiveField(7)
-  final DateTime changedAt;
-
-  @override
-  @HiveField(8)
-  final String lastUpdatedBy;
-
-  TaskModel(
-      {required this.id,
-      required this.text,
-      required this.importance,
-      this.deadline,
-      required this.done,
-      this.color,
-      required this.createdAt,
-      required this.changedAt,
-      required this.lastUpdatedBy})
-      : super(
-          id: id,
-          text: text,
-          importance: importance,
-          deadline: deadline,
-          done: done,
-          color: color,
-          createdAt: createdAt,
-          changedAt: changedAt,
-          lastUpdatedBy: lastUpdatedBy,
-        );
+  factory TaskModel.fromJson(Map<String, dynamic> json) => _$TaskModelFromJson(json);
 
   factory TaskModel.fromEntity(TaskEntity entity) {
     return TaskModel(
@@ -75,7 +34,9 @@ class TaskModel extends TaskEntity {
       lastUpdatedBy: entity.lastUpdatedBy,
     );
   }
+}
 
+extension TaskModelX on TaskModel {
   TaskEntity toEntity() {
     return TaskEntity(
       id: id,
