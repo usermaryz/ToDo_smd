@@ -72,5 +72,8 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
+      - name: Set token as environment variable
+        run: export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}
+
       - name: Upload apk to Firebase distribution
-        run: firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --token ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }}
