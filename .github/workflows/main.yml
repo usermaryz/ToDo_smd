@@ -55,6 +55,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   deploy:
+    secrets: inherit
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -73,10 +74,7 @@ jobs:
         run: curl -sL https://firebase.tools | bash
 
       - name: Set token as environment variable
-        run: export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }} | FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
-        
-      - name: test
-        run: echo $FIREBASE_APP_ID | echo $FIREBASE_APP_ID
+        run: export FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }} | export FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
 
       - name: Upload apk to Firebase distribution
         run: firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app $FIREBASE_APP_ID
