@@ -5,13 +5,6 @@ import 'package:todo_usermary/feature/domain/entities/task_entity.dart';
 import 'package:todo_usermary/feature/data/services/api_service.dart';
 import 'package:todo_usermary/feature/data/services/dio_client.dart';
 
-import 'package:test/test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:dio/dio.dart';
-import 'package:todo_usermary/feature/domain/entities/task_entity.dart';
-import 'package:todo_usermary/feature/data/services/api_service.dart';
-import 'package:todo_usermary/feature/data/services/dio_client.dart';
-
 class MockDioClient extends Mock implements DioClient {}
 
 void main() {

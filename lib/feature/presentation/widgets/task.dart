@@ -9,12 +9,14 @@ class TaskItem extends StatelessWidget {
   final TaskEntity task;
   final Function(bool) onToggleCompleted;
   final Function() onDelete;
+  final Color importanceColor;
 
   const TaskItem({
     super.key,
     required this.task,
     required this.onToggleCompleted,
     required this.onDelete,
+    required this.importanceColor,
   });
 
   @override
@@ -72,13 +74,13 @@ class TaskItem extends StatelessWidget {
                 color: task.done
                     ? tdGreen
                     : task.importance == 'important'
-                        ? tdRed
+                        ? importanceColor
                         : tdGrey,
               ),
               color: task.done
                   ? Theme.of(context).textTheme.headlineLarge?.color
                   : task.importance == 'important'
-                      ? tdRed.withOpacity(0.5)
+                      ? importanceColor.withOpacity(0.5)
                       : Theme.of(context).inputDecorationTheme.fillColor,
             ),
             child: task.done
@@ -94,7 +96,7 @@ class TaskItem extends StatelessWidget {
           children: [
             if (task.importance == 'important')
               Icon(Icons.priority_high,
-                  color: Theme.of(context).textTheme.labelMedium?.color,
+                  color: importanceColor,
                   size: 16)
             else if (task.importance == 'low')
               Icon(Icons.arrow_downward,

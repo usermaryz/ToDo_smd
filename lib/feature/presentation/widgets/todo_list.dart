@@ -5,7 +5,7 @@ import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
-import '/constants/colors.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import '/constants/strings.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
@@ -20,6 +20,31 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
+  String importanceColor = "#FF3B30";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchImportanceColor();
+  }
+
+  Future<void> _fetchImportanceColor() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+    setState(() {
+      importanceColor = remoteConfig.getString('importanceColor');
+      print("importance: $importanceColor");
+    });
+
+    remoteConfig.onConfigUpdated.listen((event) async {
+      await remoteConfig.activate();
+      setState(() {
+        importanceColor = remoteConfig.getString('importanceColor');
+        print("importance: $importanceColor");
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final taskBloc = TaskProvider.of(context);
@@ -68,6 +93,8 @@ class _TodoListState extends State<TodoList> {
                           taskBloc.add(
                               DeleteTask((filteredTasks[index].id).toString()));
                         },
+                        importanceColor: Color(int.parse(
+                            importanceColor.replaceFirst('#', '0xff'))),
                       );
                     },
                   ),
