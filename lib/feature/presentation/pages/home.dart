@@ -197,6 +197,10 @@ class HomeBody extends StatelessWidget {
         const SizedBox(
           height: 40,
         ),
+        TextButton(
+          onPressed: () => throw Exception(),
+          child: const Text("Throw Test Exception"),
+        ),
       ],
     );
   }
