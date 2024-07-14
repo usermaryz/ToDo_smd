@@ -55,7 +55,6 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   deploy:
-    secrets: inherit
     runs-on: ubuntu-latest
     needs: build
     steps:
