@@ -32,7 +32,7 @@ jobs:
         run: flutter test
         continue-on-error: true
 
-  bd:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -46,19 +46,30 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Build apk
+        run: flutter build apk
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: Build apk
-        run: flutter build apk
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
 
       - name: Upload apk to Firebase distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: Testers
-          file: build/app/outputs/flutter-apk/app-release.apk
+        run: firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --token ${{ secrets.FIREBASE_TOKEN }}
