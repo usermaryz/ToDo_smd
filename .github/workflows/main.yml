@@ -7,7 +7,7 @@ on:
     branches: [ "main", "fourth-phase" ]
 
 jobs:
-  fltbd:
+  flt:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -32,6 +32,9 @@ jobs:
         run: flutter test
         continue-on-error: true
 
+  bd:
+    runs-on: ubuntu-latest
+    steps:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -46,5 +49,5 @@ jobs:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: Testers
+          groups: all_testers
           file: build/app/outputs/flutter-apk/app-release.apk
