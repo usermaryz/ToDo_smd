@@ -278,12 +278,12 @@ class NewTaskState extends State<NewTask> {
 
     if (widget.task != null) {
       await analytics
-          .logEvent(name: 'task_updated', parameters: {'taskId': id!});
+          .logEvent(name: 'task_updated', parameters: {'taskId': newTask.id});
 
       taskBloc.add(UpdateTask(newTask));
       AppLogger.i('Task updated: $newTask');
     } else {
-      await analytics.logEvent(name: 'task_added', parameters: {'taskId': id!});
+      await analytics.logEvent(name: 'task_added', parameters: {'taskId': newTask.id});
       taskBloc.add(AddTask(newTask));
 
       AppLogger.i('New task added: $newTask');
