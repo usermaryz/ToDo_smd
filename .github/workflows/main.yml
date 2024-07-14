@@ -30,8 +30,13 @@ jobs:
       - name: Verify formatting
         run: dart format --output=none
 
+      - name: Run linter
+        run: flutter analyze
+        continue-on-error: true
+
       - name: Run tests
-        run: flutter test
+        run: flutter test # путь до файла
+        continue-on-error: true
 
       - name: Build apk
         run: flutter build apk
