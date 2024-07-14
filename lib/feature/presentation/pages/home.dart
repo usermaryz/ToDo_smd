@@ -6,6 +6,7 @@ import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import '/constants/strings.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
@@ -21,9 +22,12 @@ class _HomeState extends State<Home> {
   final scrollController = ScrollController();
   bool renderButtonHeader = false;
   bool showCompletedTasks = false;
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
+    analytics.setAnalyticsCollectionEnabled(true);
+
     scrollController.addListener(() {
       bool? newRenderButtonHeader;
       if (scrollController.offset > 80) {
@@ -56,10 +60,12 @@ class _HomeState extends State<Home> {
       floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               final routerDelegate =
                   Router.of(context).routerDelegate as AppRouterDelegate;
               routerDelegate.handleNavigation(AppRoutes.newTask);
+              await analytics.logEvent(
+                  name: 'open_page', parameters: {'page': 'new_task'});
             },
             shape: const CircleBorder(),
             backgroundColor: Theme.of(context).textTheme.labelLarge?.color,
@@ -73,7 +79,7 @@ class _HomeState extends State<Home> {
             slivers: [
               SliverAppBar(
                 pinned: true,
-                expandedHeight: 80,
+                expandedHeight: 100,
                 toolbarHeight: 80,
                 backgroundColor: Theme.of(context).primaryColor,
                 onStretchTrigger: () async {},
@@ -123,7 +129,7 @@ class _HomeState extends State<Home> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 50),
+                                    padding: const EdgeInsets.only(left: 40),
                                     child: Text(
                                       '${Messages.completed} - $completedTasksCount',
                                       style: Theme.of(context)

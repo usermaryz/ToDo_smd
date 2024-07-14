@@ -5,7 +5,7 @@ class AppRouteInformationParser extends RouteInformationParser<AppRoutes> {
   @override
   Future<AppRoutes> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location);
+    final uri = routeInformation.uri;
 
     if (uri.pathSegments.isEmpty) {
       return AppRoutes.home;
@@ -24,9 +24,9 @@ class AppRouteInformationParser extends RouteInformationParser<AppRoutes> {
   RouteInformation? restoreRouteInformation(AppRoutes configuration) {
     switch (configuration) {
       case AppRoutes.home:
-        return const RouteInformation(location: '/');
+        return RouteInformation(uri: Uri.parse('/'));
       case AppRoutes.newTask:
-        return const RouteInformation(location: '/new-task');
+        return RouteInformation(uri: Uri.parse('/new-task'));
     }
   }
 }

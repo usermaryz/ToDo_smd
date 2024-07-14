@@ -5,6 +5,7 @@ import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/feature/presentation/widgets/date_time.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
@@ -17,10 +18,10 @@ class NewTask extends StatefulWidget {
   const NewTask({super.key, this.task});
 
   @override
-  _NewTaskState createState() => _NewTaskState();
+  NewTaskState createState() => NewTaskState();
 }
 
-class _NewTaskState extends State<NewTask> {
+class NewTaskState extends State<NewTask> {
   late TextEditingController _taskController;
   String _importance = 'basic';
   String? id;
@@ -31,8 +32,11 @@ class _NewTaskState extends State<NewTask> {
   bool deleteButton = false;
   int? revision;
 
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   @override
   void initState() {
+    analytics.setAnalyticsCollectionEnabled(true);
     super.initState();
 
     if (widget.task != null) {
@@ -67,7 +71,9 @@ class _NewTaskState extends State<NewTask> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
-          onPressed: () {
+          onPressed: () async {
+            await analytics
+                .logEvent(name: 'open_page', parameters: {'page': 'home'});
             final routerDelegate =
                 Router.of(context).routerDelegate as AppRouterDelegate;
             routerDelegate.handleNavigation(AppRoutes.home);
@@ -253,7 +259,7 @@ class _NewTaskState extends State<NewTask> {
     );
   }
 
-  void _saveTask(TaskBloc taskBloc) {
+  void _saveTask(TaskBloc taskBloc) async {
     if (_taskController.text.isEmpty) {
       AppLogger.w('Task description is empty');
       return;
@@ -271,21 +277,30 @@ class _NewTaskState extends State<NewTask> {
     );
 
     if (widget.task != null) {
+      await analytics
+          .logEvent(name: 'task_updated', parameters: {'taskId': id!});
+
       taskBloc.add(UpdateTask(newTask));
       AppLogger.i('Task updated: $newTask');
     } else {
+      await analytics.logEvent(name: 'task_added', parameters: {'taskId': id!});
       taskBloc.add(AddTask(newTask));
+
       AppLogger.i('New task added: $newTask');
     }
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       Navigator.of(context).pop();
+      await analytics.logEvent(name: 'open_page', parameters: {'page': 'home'});
     });
   }
 
-  void _deleteTask(TaskBloc taskBloc) {
+  void _deleteTask(TaskBloc taskBloc) async {
+    await analytics.logEvent(name: 'task_deleted', parameters: {'taskId': id!});
+
     taskBloc.add(DeleteTask(id!));
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       Navigator.of(context).pop();
+      await analytics.logEvent(name: 'open_page', parameters: {'page': 'home'});
     });
   }
 }

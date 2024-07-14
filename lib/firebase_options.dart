@@ -47,6 +47,7 @@ class DefaultFirebaseOptions {
     projectId: 'todolist-e207',
     authDomain: 'todolist-e207.firebaseapp.com',
     storageBucket: 'todolist-e207.appspot.com',
+    measurementId: 'G-MV1C5ZQDB0',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -82,5 +83,7 @@ class DefaultFirebaseOptions {
     projectId: 'todolist-e207',
     authDomain: 'todolist-e207.firebaseapp.com',
     storageBucket: 'todolist-e207.appspot.com',
+    measurementId: 'G-68HXT2FT1J',
   );
+
 }

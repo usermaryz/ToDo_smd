@@ -48,7 +48,7 @@ Future<Widget> initializeApp() async {
     final taskBox = await container.read(hiveBoxProvider.future);
     final restClient = container.read(restClientProvider);
 
-    await remoteConfig.setDefaults(const {"importanceColor": '#FF3B30'});
+    await remoteConfig.setDefaults(const {'importanceColor': '#FF3B30'});
 
     FirebaseAnalytics analytics = FirebaseAnalytics.instance;
     await analytics.logEvent(

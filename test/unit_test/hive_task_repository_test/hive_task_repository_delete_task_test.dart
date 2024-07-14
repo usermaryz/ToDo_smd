@@ -24,7 +24,7 @@ void main() {
     test('deleteTask removes task from Hive and server', () async {
       const taskId = '11f3ad34-254f-4f56-986a-0bc9cb7de9d1';
 
-      when(mockBox.delete(taskId)).thenAnswer((_) async => null);
+      when(mockBox.delete(taskId)).thenAnswer((_) async {});
       when(mockRestClient.deleteTask(taskId)).thenAnswer((_) async => Future.value(null));
 
       await repository.deleteTask(taskId);

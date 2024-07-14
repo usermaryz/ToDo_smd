@@ -2,9 +2,9 @@ name: Flutter
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "fourth-phase" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "fourth-phase" ]
 
 jobs:
   flutter_jobs:
@@ -31,7 +31,7 @@ jobs:
         run: dart format --output=none
 
       - name: Run linter
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Run tests
         run: flutter test

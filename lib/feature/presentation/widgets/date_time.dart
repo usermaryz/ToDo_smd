@@ -16,10 +16,10 @@ class DateTimeWidget extends StatefulWidget {
   });
 
   @override
-  _DateTimeWidgetState createState() => _DateTimeWidgetState();
+  DateTimeWidgetState createState() => DateTimeWidgetState();
 }
 
-class _DateTimeWidgetState extends State<DateTimeWidget> {
+class DateTimeWidgetState extends State<DateTimeWidget> {
   DateTime? selectedDate;
 
   @override

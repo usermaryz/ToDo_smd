@@ -41,14 +41,13 @@ class SyncManager {
     }
   }
 
-
   Future<void> _syncLocalToServer() async {
     List<TaskEntity> localTasks = taskBox.values.toList();
 
     for (var task in localTasks) {
       if (task.id.isEmpty) {
         try {
-          TaskEntity serverTask = await restClient.addTask(task);
+          await restClient.addTask(task);
           await taskBox.delete(task.key);
         } catch (e) {
           AppLogger.e('Error in _syncLocalToServer: $e');

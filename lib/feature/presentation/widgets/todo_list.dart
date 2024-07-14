@@ -6,6 +6,7 @@ import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import '/constants/strings.dart';
 import '/router/app_routes.dart';
 import '/router/app_router.dart';
@@ -20,10 +21,12 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  String importanceColor = "#FF3B30";
+  String importanceColor = '#FF3B30';
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
+    analytics.setAnalyticsCollectionEnabled(true);
     super.initState();
     _fetchImportanceColor();
   }
@@ -33,14 +36,12 @@ class _TodoListState extends State<TodoList> {
     await remoteConfig.fetchAndActivate();
     setState(() {
       importanceColor = remoteConfig.getString('importanceColor');
-      print("importance: $importanceColor");
     });
 
     remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
       setState(() {
         importanceColor = remoteConfig.getString('importanceColor');
-        print("importance: $importanceColor");
       });
     });
   }
@@ -85,11 +86,17 @@ class _TodoListState extends State<TodoList> {
                     itemBuilder: (context, index) {
                       return TaskItem(
                         task: filteredTasks[index],
-                        onToggleCompleted: (bool isCompleted) {
+                        onToggleCompleted: (bool isCompleted) async {
+                          await analytics.logEvent(
+                              name: 'task_done',
+                              parameters: {'taskId': filteredTasks[index].id});
                           taskBloc.add(DoneTask(filteredTasks[index]));
                           setState(() {});
                         },
-                        onDelete: () {
+                        onDelete: () async {
+                          await analytics.logEvent(
+                              name: 'task_deleted',
+                              parameters: {'taskId': filteredTasks[index].id});
                           taskBloc.add(
                               DeleteTask((filteredTasks[index].id).toString()));
                         },
