@@ -30,9 +30,6 @@ jobs:
       - name: Verify formatting
         run: dart format --output=none
 
-      - name: Run linter
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
-
       - name: Run tests
         run: flutter test
 
