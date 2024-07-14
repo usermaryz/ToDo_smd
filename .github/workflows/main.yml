@@ -1,14 +1,14 @@
-name: Flutter
+name: Flutter CI
 
 on:
   push:
-    branches: [ "fourth-phase" ]
+    branches: [ "main", "fourth-phase" ]
   pull_request:
-    branches: [ "fourth-phase" ]
+    branches: [ "main", "fourth-phase" ]
 
 jobs:
-  flutter_jobs:
-    runs-on: macos-latest
+  fltbd:
+    runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -21,12 +21,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
       - name: Verify formatting
         run: dart format --output=none
 
@@ -35,8 +29,14 @@ jobs:
         continue-on-error: true
 
       - name: Run tests
-        run: flutter test # путь до файла
+        run: flutter test
         continue-on-error: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
 
       - name: Build apk
         run: flutter build apk
