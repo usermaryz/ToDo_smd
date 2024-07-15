@@ -199,7 +199,7 @@ class HomeBody extends StatelessWidget {
         ),
         TextButton(
           onPressed: () => throw Exception(),
-          child: const Text("Throw Test Exception"),
+          child: const Text('Throw Test Exception'),
         ),
       ],
     );
