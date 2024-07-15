@@ -19,6 +19,9 @@ MyApp - это Flutter-приложение для управления зада
 - Навигация
 - Редактирование уже созданных задач
 
+- Поддержка больших экранов
+- Работа с Firebase (Remote Configs, Crashlytics, Analytics)
+
 ## Скриншоты работы
 
 ![alt text](result_img/список2.png)
@@ -45,4 +48,4 @@ MyApp - это Flutter-приложение для управления зада
    git clone https://github.com/usermaryz/ToDo_smd.git
 
 ### Apk 
-https://github.com/usermaryz/ToDo_smd/releases/tag/v.3
+https://github.com/usermaryz/ToDo_smd/releases/tag/v.4
