@@ -33,6 +33,8 @@ MyApp - это Flutter-приложение для управления зада
 ![alt text](result_img/новое2.png)
 ![alt text](result_img/новое3.png)
 
+Темная тема (с поддержкой Remote Config Firebase)
+![alt text](result_img/dark_theme.jpg)
 
 ## Установка и запуск
 
