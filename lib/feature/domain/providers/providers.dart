@@ -7,8 +7,6 @@ import '/feature/data/services/sync_manager.dart';
 import '/feature/data/services/dio_client.dart';
 
 final dioClientProvider = Provider<DioClient>((ref) {
-  const String baseUrl = 'https://hive.mrdekk.ru/todo';
-  const String token = 'Osse';
   return DioClient(baseUrl, token);
 });
 
