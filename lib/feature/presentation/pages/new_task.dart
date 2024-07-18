@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
@@ -8,8 +9,13 @@ import '/constants/colors.dart';
 import '/utils/logger.dart';
 import '/constants/strings.dart';
 
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
+
 class NewTask extends StatefulWidget {
-  const NewTask({super.key});
+  final TaskEntity? task;
+
+  const NewTask({super.key, this.task});
 
   @override
   _NewTaskState createState() => _NewTaskState();
@@ -17,14 +23,32 @@ class NewTask extends StatefulWidget {
 
 class _NewTaskState extends State<NewTask> {
   late TextEditingController _taskController;
-  int _importance = 2;
+  String _importance = 'basic';
+  String? id;
   DateTime? selectedDate;
+  DateTime? createdAt;
+  DateTime? changedAt;
   bool switchValue = false;
+  bool deleteButton = false;
+  int? revision;
 
   @override
   void initState() {
     super.initState();
-    _taskController = TextEditingController();
+
+    if (widget.task != null) {
+      _taskController = TextEditingController(text: widget.task!.text);
+      id = widget.task!.id;
+      _importance = widget.task!.importance;
+      selectedDate = widget.task!.deadline;
+      createdAt = widget.task!.createdAt;
+      switchValue = widget.task!.deadline != null;
+      deleteButton = true;
+    } else {
+      _taskController = TextEditingController();
+      createdAt = DateTime.now();
+    }
+
     AppLogger.d('NewTask screen initialized');
   }
 
@@ -43,9 +67,18 @@ class _NewTaskState extends State<NewTask> {
       backgroundColor: backPrimary,
       appBar: AppBar(
         backgroundColor: backPrimary,
+        leading: IconButton(
+          onPressed: () {
+            final routerDelegate =
+                Router.of(context).routerDelegate as AppRouterDelegate;
+            routerDelegate.handleNavigation(AppRoutes.home);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         actions: [
           TextButton(
-            child: const Text('СОХРАНИТЬ', style: TextStyle(color: tdBlue)),
+            child: Text(Messages.saveButton,
+                style: const TextStyle(color: tdBlue)),
             onPressed: () {
               _saveTask(taskBloc);
             },
@@ -72,7 +105,7 @@ class _NewTaskState extends State<NewTask> {
                     filled: true,
                     hintStyle: const TextStyle(color: labTernitary),
                     hintText: Messages.newTaskHint,
-                    border: InputBorder.none, // Remove the border
+                    border: InputBorder.none,
                   ),
                   style: const TextStyle(
                     fontSize: 16,
@@ -97,33 +130,33 @@ class _NewTaskState extends State<NewTask> {
                   color: labPrimary,
                 ),
               ),
-              DropdownButton<int>(
+              DropdownButton<String>(
                 value: _importance,
-                onChanged: (int? value) {
+                onChanged: (String? value) {
                   setState(() {
                     _importance = value!;
                   });
                   AppLogger.d('Importance set to $_importance');
                 },
                 items: [
-                  DropdownMenuItem<int>(
-                    value: 1,
+                  DropdownMenuItem<String>(
+                    value: 'important',
                     child: Text(Messages.high,
                         style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
-                  DropdownMenuItem<int>(
-                    value: 2,
+                  DropdownMenuItem<String>(
+                    value: 'basic',
                     child: Text(Messages.medium,
                         style: const TextStyle(
                           color: labPrimary,
                           fontSize: 14,
                         )),
                   ),
-                  DropdownMenuItem<int>(
-                    value: 3,
+                  DropdownMenuItem<String>(
+                    value: 'low',
                     child: Text(Messages.low,
                         style: const TextStyle(
                           color: labPrimary,
@@ -187,17 +220,22 @@ class _NewTaskState extends State<NewTask> {
                 endIndent: 0,
               ),
               const SizedBox(height: 20),
-              Row(children: [
-                const Icon(Icons.delete, color: labTernitary),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(Messages.delete,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: labTernitary,
-                    ))
-              ])
+              InkWell(
+                  onTap: () {
+                    _deleteTask(taskBloc);
+                  },
+                  child: Row(children: [
+                    Icon(Icons.delete,
+                        color: deleteButton ? tdRed : labTernitary),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(Messages.delete,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: deleteButton ? tdRed : labTernitary,
+                        ))
+                  ]))
             ],
           ),
         ),
@@ -212,15 +250,32 @@ class _NewTaskState extends State<NewTask> {
     }
 
     final newTask = TaskEntity(
-      id: DateTime.now().millisecondsSinceEpoch,
-      description: _taskController.text,
+      id: widget.task?.id ?? const Uuid().v4(),
+      text: _taskController.text,
       importance: _importance,
-      isDone: false,
-      date: selectedDate,
+      done: widget.task?.done ?? false,
+      deadline: selectedDate,
+      createdAt: widget.task?.createdAt ?? DateTime.now(),
+      changedAt: DateTime.now(),
+      lastUpdatedBy: '123',
     );
 
-    taskBloc.add(AddTask(newTask));
-    AppLogger.i('New task added: $newTask');
-    Navigator.of(context).pop();
+    if (widget.task != null) {
+      taskBloc.add(UpdateTask(newTask));
+      AppLogger.i('Task updated: $newTask');
+    } else {
+      taskBloc.add(AddTask(newTask));
+      AppLogger.i('New task added: $newTask');
+    }
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Navigator.of(context).pop();
+    });
+  }
+
+  void _deleteTask(TaskBloc taskBloc) {
+    taskBloc.add(DeleteTask(id!));
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Navigator.of(context).pop();
+    });
   }
 }

@@ -1,65 +1,153 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '/feature/data/models/todo_item.dart';
+import 'package:dio/dio.dart';
+import '/feature/domain/entities/task_entity.dart';
+import 'dio_client.dart';
+import '/utils/logger.dart';
 
-const String BASE_URL = 'https://beta.mrdekk.ru/todo';
-const String TOKEN = 'YOUR_AUTH_TOKEN';
+class ApiService {
+  final DioClient _dioClient;
+  int _revision = 0;
 
-Future<List<TodoItem>> fetchTodoList() async {
-  final response = await http.get(
-    Uri.parse('$BASE_URL/list'),
-    headers: {'Authorization': 'Bearer $TOKEN'},
-  );
-  if (response.statusCode == 200) {
-    final jsonList = jsonDecode(response.body)['list'] as List;
-    return jsonList.map((e) => TodoItem.fromJson(e)).toList();
-  } else {
-    throw Exception('Failed to load todo list');
+  void _updateRevision(int newRevision) {
+    _revision = newRevision;
   }
-}
 
-Future<TodoItem> fetchTodoItem(String id) async {
-  final response = await http.get(
-    Uri.parse('$BASE_URL/list/$id'),
-    headers: {'Authorization': 'Bearer $TOKEN'},
-  );
-  if (response.statusCode == 200) {
-    return TodoItem.fromJson(jsonDecode(response.body)['element']);
-  } else if (response.statusCode == 404) {
-    throw Exception('Todo item not found');
-  } else {
-    throw Exception('Failed to load todo item');
+  ApiService(this._dioClient);
+
+  Future<List<TaskEntity>> getList() async {
+    try {
+      final response = await _dioClient.dio.get('/list');
+      if (response.data['status'] == 'ok') {
+        _updateRevision(response.data['revision']);
+        List<TaskEntity> tasks = (response.data['list'] as List)
+            .map((task) => TaskEntity.fromJson(task))
+            .toList();
+        return tasks;
+      } else {
+        throw Exception('Failed to load tasks');
+      }
+    } on DioException catch (e) {
+      AppLogger.e('Error in getList: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
-Future<void> updateTodoItem(TodoItem item) async {
-  final response = await http.put(
-    Uri.parse('$BASE_URL/list/${item.id}'),
-    headers: {
-      'Authorization': 'Bearer $TOKEN',
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(item.toJson()),
-  );
-  if (response.statusCode == 404) {
-    throw Exception('Todo item not found');
-  } else if (response.statusCode == 400) {
-    throw Exception('Revision mismatch');
-  } else if (response.statusCode != 200) {
-    throw Exception('Failed to update todo item');
+  Future<void> updateList(List<TaskEntity> tasks) async {
+    try {
+      final response = await _dioClient.dio.patch(
+        '/list',
+        data: {'list': tasks.map((task) => task.toJson()).toList()},
+        options: Options(headers: {'X-Last-Known-Revision': _revision}),
+      );
+      if (response.data['status'] != 'ok') {
+        throw Exception('Failed to update tasks');
+      }
+      _updateRevision(response.data['revision']);
+    } on DioException catch (e) {
+      AppLogger.e('Error in updateList: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
-Future<void> deleteTodoItem(String id) async {
-  final response = await http.delete(
-    Uri.parse('$BASE_URL/list/$id'),
-    headers: {'Authorization': 'Bearer $TOKEN'},
-  );
-  if (response.statusCode == 404) {
-    throw Exception('Todo item not found');
-  } else if (response.statusCode == 400) {
-    throw Exception('Revision mismatch');
-  } else if (response.statusCode != 200) {
-    throw Exception('Failed to delete todo item');
+  Future<TaskEntity> getTaskById(String id) async {
+    try {
+      final response = await _dioClient.dio.get('/list/$id');
+      if (response.data['status'] == 'ok') {
+        return TaskEntity.fromJson(response.data['element']);
+      } else {
+        throw Exception('Failed to load task');
+      }
+    } on DioException catch (e) {
+      AppLogger.e('Error in getTaskById: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<TaskEntity> addTask(TaskEntity task) async {
+    try {
+      final response = await _dioClient.dio.post(
+        '/list',
+        data: {'element': task.toJson()},
+        options: Options(headers: {'X-Last-Known-Revision': _revision}),
+      );
+      if (response.data['status'] == 'ok') {
+        _updateRevision(response.data['revision']);
+        return TaskEntity.fromJson(response.data['element']);
+      } else {
+        throw Exception('Failed to add task');
+      }
+    } on DioException catch (e) {
+      AppLogger.e('Error in addTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<TaskEntity> updateTask(TaskEntity task) async {
+    try {
+      final response = await _dioClient.dio.put(
+        '/list/${task.id}',
+        data: {'element': task.toJson()},
+        options: Options(headers: {'X-Last-Known-Revision': _revision}),
+      );
+
+      if (response.statusCode != 200 || response.data['status'] != 'ok') {
+        throw Exception(response.statusCode);
+      }
+
+      final newTask = TaskEntity.fromJson(response.data['element']);
+      _updateRevision(response.data['revision']);
+
+      return newTask;
+    } on DioException catch (e) {
+      AppLogger.e('Error in updateTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<TaskEntity> deleteTask(String id) async {
+    try {
+      final response = await _dioClient.dio.delete(
+        '/list/$id',
+        options: Options(headers: {'X-Last-Known-Revision': _revision}),
+      );
+      if (response.data['status'] == 'ok') {
+        _updateRevision(response.data['revision']);
+        return TaskEntity.fromJson(response.data['element']);
+      } else {
+        throw Exception('Failed to delete task');
+      }
+    } on DioException catch (e) {
+      AppLogger.e('Error in deleteTask: $e');
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception('No internet connection');
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'task.dart';
-import '/feature/presentation/pages/new_task.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
 
 class TodoList extends StatefulWidget {
   final bool showCompletedTasks;
@@ -28,7 +29,7 @@ class _TodoListState extends State<TodoList> {
       builder: (context, tasks) {
         final filteredTasks = widget.showCompletedTasks
             ? tasks
-            : tasks.where((task) => !task.isDone).toList();
+            : tasks.where((task) => !task.done).toList();
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -64,19 +65,17 @@ class _TodoListState extends State<TodoList> {
                           setState(() {});
                         },
                         onDelete: () {
-                          taskBloc.add(DeleteTask(filteredTasks[index].id));
+                          taskBloc.add(DeleteTask(
+                              (filteredTasks[index].id).toString()));
                         },
                       );
                     },
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NewTask(),
-                        ),
-                      );
+                      final routerDelegate = Router.of(context).routerDelegate
+                          as AppRouterDelegate;
+                      routerDelegate.handleNavigation(AppRoutes.newTask);
                     },
                     color: Colors.transparent,
                     elevation: 0,
@@ -86,7 +85,8 @@ class _TodoListState extends State<TodoList> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         Messages.newTask,
-                        style: const TextStyle(color: labTernitary, fontSize: 16),
+                        style:
+                            const TextStyle(color: labTernitary, fontSize: 16),
                       ),
                     ),
                   ),

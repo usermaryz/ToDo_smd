@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import '/feature/domain/entities/task_entity.dart';
 
 abstract class TaskEvent extends Equatable {
+  const TaskEvent();
+
   @override
   List<Object> get props => [];
 }
@@ -11,7 +13,7 @@ class LoadTasks extends TaskEvent {}
 class AddTask extends TaskEvent {
   final TaskEntity task;
 
-  AddTask(this.task);
+  const AddTask(this.task);
 
   @override
   List<Object> get props => [task];
@@ -20,16 +22,16 @@ class AddTask extends TaskEvent {
 class UpdateTask extends TaskEvent {
   final TaskEntity task;
 
-  UpdateTask(this.task);
+  const UpdateTask(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
 class DeleteTask extends TaskEvent {
-  final int taskId;
+  final String taskId;
 
-  DeleteTask(this.taskId);
+  const DeleteTask(this.taskId);
 
   @override
   List<Object> get props => [taskId];
@@ -38,16 +40,16 @@ class DeleteTask extends TaskEvent {
 class DoneTask extends TaskEvent {
   final TaskEntity task;
 
-  DoneTask(this.task);
+  const DoneTask(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
 class DoneList extends TaskEvent {
-  final TaskEntity task;
+  final List<TaskEntity> task;
 
-  DoneList(this.task);
+  const DoneList(this.task);
 
   @override
   List<Object> get props => [task];

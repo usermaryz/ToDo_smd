@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '/feature/domain/entities/task_entity.dart';
 import '/constants/colors.dart';
 import '/constants/strings.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskEntity task;
@@ -18,7 +20,7 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(),
+      key: ValueKey(task.id),
       background: Container(
         color: tdGreen,
         child: const Align(
@@ -45,17 +47,19 @@ class TaskItem extends StatelessWidget {
           ),
         ),
       ),
-      onDismissed: (direction) {
+      confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          onToggleCompleted(!task.isDone);
+          onToggleCompleted(!task.done);
+          return false;
         } else {
           onDelete();
+          return true;
         }
       },
       child: ListTile(
         leading: InkWell(
           onTap: () {
-            onToggleCompleted(!task.isDone);
+            onToggleCompleted(!task.done);
           },
           child: Container(
             width: 20.0,
@@ -65,19 +69,19 @@ class TaskItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               border: Border.all(
                 width: 2,
-                color: task.isDone
+                color: task.done
                     ? tdGreen
-                    : task.importance == 1
+                    : task.importance == 'important'
                         ? tdRed
                         : tdGrey,
               ),
-              color: task.isDone
+              color: task.done
                   ? tdGreen
-                  : task.importance == 1
+                  : task.importance == 'important'
                       ? tdRed.withOpacity(0.5)
                       : tdWhite,
             ),
-            child: task.isDone
+            child: task.done
                 ? const Icon(
                     Icons.check,
                     color: tdWhite,
@@ -88,41 +92,46 @@ class TaskItem extends StatelessWidget {
         ),
         title: Row(
           children: [
-            if (task.importance == 1)
+            if (task.importance == 'important')
               const Icon(Icons.priority_high, color: tdRed, size: 16)
-            else if (task.importance == 3)
+            else if (task.importance == 'low')
               const Icon(Icons.arrow_downward, color: tdGrey, size: 16),
             const SizedBox(width: 2),
             Expanded(
               child: Text(
-                task.description,
+                task.text,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 16,
-                  decoration: task.isDone
+                  decoration: task.done
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
                   decorationColor: labTernitary,
-                  color: task.isDone ? labTernitary : labPrimary,
+                  color: task.done ? labTernitary : labPrimary,
                 ),
               ),
             ),
           ],
         ),
-        subtitle: task.date != null
+        subtitle: task.deadline != null
             ? Text(
-                '${Messages.doBefore}: ${task.date!.day}/${task.date!.month}/${task.date!.year}',
+                '${Messages.doBefore}: ${task.deadline!.day}/${task.deadline!.month}/${task.deadline!.year}',
                 style: const TextStyle(
                   color: labTernitary,
                   fontSize: 14,
                 ),
               )
             : null,
-        trailing: const Icon(
-          Icons.info,
+        trailing: IconButton(
+          icon: const Icon(Icons.info),
           color: supSeparetor,
-          size: 25.0,
+          iconSize: 25.0,
+          onPressed: () {
+            final routerDelegate =
+                Router.of(context).routerDelegate as AppRouterDelegate;
+            routerDelegate.handleNavigation(AppRoutes.newTask, task: task);
+          },
         ),
       ),
     );

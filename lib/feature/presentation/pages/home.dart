@@ -1,16 +1,14 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '/feature/presentation/widgets/todo_list.dart';
 import '/constants/colors.dart';
-import '/feature/presentation/pages/new_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/feature/presentation/bloc/task_event.dart';
 import '/feature/presentation/bloc/task_provider.dart';
-
 import '/feature/domain/entities/task_entity.dart';
 import '/feature/presentation/bloc/task_bloc.dart';
 import '/constants/strings.dart';
+import '/router/app_routes.dart';
+import '/router/app_router.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -57,12 +55,9 @@ class _HomeState extends State<Home> {
       backgroundColor: backPrimary,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NewTask(),
-            ),
-          );
+          final routerDelegate =
+              Router.of(context).routerDelegate as AppRouterDelegate;
+          routerDelegate.handleNavigation(AppRoutes.newTask);
         },
         shape: const CircleBorder(),
         backgroundColor: tdBlue,
@@ -108,7 +103,7 @@ class _HomeState extends State<Home> {
               bloc: taskBloc,
               builder: (context, tasks) {
                 final completedTasksCount =
-                    tasks.where((task) => task.isDone).length;
+                    tasks.where((task) => task.done).length;
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +161,7 @@ class HomeBody extends StatelessWidget {
   }
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+/*class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
     required this.minHeight,
     required this.maxHeight,
@@ -195,3 +190,4 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child != oldDelegate.child;
   }
 }
+*/

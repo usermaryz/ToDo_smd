@@ -1,46 +1,32 @@
 import 'package:flutter/material.dart';
-import 'feature/presentation/pages/home.dart';
-import '/feature/presentation/bloc/task_provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
-import '/feature/domain/entities/task_entity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import '/my_app.dart';
+import '/feature/presentation/pages/no_internet_page.dart';
+import '/feature/domain/providers/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocumentDir.path);
-  Hive.registerAdapter(TaskEntityAdapter());
-  final taskBox = await Hive.openBox<TaskEntity>('tasks');
-
-  runApp(MyApp(taskBox: taskBox));
+  runApp(
+    ProviderScope(
+      child: await initializeApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  final Box<TaskEntity> taskBox;
+Future<Widget> initializeApp() async {
+  final container = ProviderContainer();
+  final syncManager = await container.read(syncManagerProvider.future);
+  await syncManager.syncTasks();
 
-  const MyApp({super.key, required this.taskBox});
+  final connectivityResult = await (Connectivity().checkConnectivity());
 
-  @override
-  Widget build(BuildContext context) {
-    return TaskProvider(
-      taskBox: taskBox,
-      child: const MaterialApp(
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          Locale('en', 'EN'),
-          Locale('ru', 'RU'),
-        ],
-        locale: Locale('ru'),
-        title: 'ToDo App',
-        home: Home(),
-      ),
-    );
+  if (connectivityResult == ConnectivityResult.none) {
+    return const NoInternetApp();
+  } else {
+    final taskBox = await container.read(hiveBoxProvider.future);
+    final restClient = container.read(restClientProvider);
+    return MyApp(taskBox: taskBox, client: restClient);
   }
 }

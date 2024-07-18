@@ -1,0 +1,1 @@
+enum AppRoutes { home, newTask }
